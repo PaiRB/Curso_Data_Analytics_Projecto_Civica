@@ -14,8 +14,8 @@ renamed_casted AS (
     SELECT
           _row AS budget_id
         , product_id
-        , quantity AS Cantidad
-        , month AS Mes
+        , quantity
+        , month
     FROM src_budget_products
     )
 

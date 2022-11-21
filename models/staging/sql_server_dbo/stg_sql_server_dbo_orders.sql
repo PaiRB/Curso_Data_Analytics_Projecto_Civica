@@ -13,16 +13,19 @@ renamed_casted AS (
     SELECT
           order_id
         , user_id
-        , promo_id
-        , status AS Estado_del_pedido
-        , order_total AS Coste_total_$
-        , order_cost AS Coste_pedido_$
-        , shipping_cost AS Coste_envio_$
-        , shipping_service AS Servicio_envio
-        , delivered_at AS Fecha_recepcion
-        , estimated_delivery_at AS Fecha_estimada_recepcion
-        , created_at AS Fecha_pedido
         , address_id
+        , promo_id
+        , status
+        , order_total AS order_total_$
+        , order_cost AS order_cost_$
+        , shipping_cost AS shipping_cost_$
+        , shipping_service 
+
+        , created_at ::DATE AS order_date
+        , created_at ::TIME AS order_time_hour
+        , delivered_at
+        , estimated_delivery_at ::DATE AS estimated_delivery_at
+        
     FROM src_sql_orders
     )
 

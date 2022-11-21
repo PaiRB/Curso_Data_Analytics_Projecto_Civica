@@ -12,10 +12,10 @@ WITH src_sql_addresses AS (
 renamed_casted AS (
     SELECT
           address_id
-        , zipcode AS Codigo_Postal
-        , country AS Pais
-        , address AS Direccion
-        , state AS Estado
+        , zipcode 
+        , country 
+        , address 
+        , state
     FROM src_sql_addresses
     )
 
