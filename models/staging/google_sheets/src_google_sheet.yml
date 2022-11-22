@@ -2,9 +2,16 @@ version: 2
 
 sources:
 
-  - name: src_google_sheets # name of the source 
+  - name: src_google_sheets # name of the source
+    description: >
+      Raw data de la tabla budget. 
     schema: google_sheets # this is the schema our raw data lives in
-    database: dev_bronze_db_alumno23 # this is the name of our database
+    database: |  
+        {%- if  target.name == 'user_dev' -%} dev_bronze_db_alumno23
+        {%- elif target.name == 'ci' -%} dev_bronze_db_alumno23 
+        {%- elif target.name == 'pro'-%} pro_bronze_db_alumno23 
+        {%- else -%} {{target.database}}_bronze_db_alumnoa23
+        {%- endif -%}
 
     quoting:
       database: false

@@ -79,15 +79,20 @@ promos as  (
 SELECT o.order_id
     , oit.product_id
     , o.user_id
+    , o.address_id
     , o.promo_id
-    --, o.address_id
-    --, pro.discount
-    --, o.status
+    , coalesce(pro.discount, 0) AS discount --sirve para lo mismo que poner un case when para quitar los nulos y sustituirlos por ceros.
+    , o.status
     , p.price_$
     , oit.quantity
-    , (p.price_$*oit.quantity) AS precio_$
-    , o.order_cost_$
+    , (p.price_$*oit.quantity) AS order_cost_$
     , o.shipping_cost_$
+    /*
+    , CASE
+        WHEN pro.discount IS NULL THEN ((p.price_$*oit.quantity)+o.shipping_cost_$)
+        ELSE (((p.price_$*oit.quantity)+o.shipping_cost_$)-pro.discount)
+        END AS total_cost_$
+    */
     , o.order_total_$
 
 FROM orders o 
@@ -95,7 +100,7 @@ FROM orders o
     ON o.order_id = oit.order_id
     JOIN products p
     ON oit.product_id = p.product_id
-    --JOIN promos pro
-    --ON o.promo_id = pro.promo_id
+    LEFT JOIN promos pro
+    ON o.promo_id = pro.promo_id
 
 ORDER BY o.order_id

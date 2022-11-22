@@ -5,7 +5,12 @@ sources:
   - name: src_sql_server_dbo
     schema: sql_server_dbo
     description: "Schema con los tablas de sql sever"
-    database: dev_bronze_db_alumno23
+    database: |  
+      {%- if  target.name == 'user_dev' -%} dev_bronze_db_alumno23
+      {%- elif target.name == 'ci' -%} dev_bronze_db_alumno23 
+      {%- elif target.name == 'pro'-%} pro_bronze_db_alumno23 
+      {%- else -%} {{target.database}}_bronze_db_alumnoa23
+      {%- endif -%}
 
     quoting:
       database: false

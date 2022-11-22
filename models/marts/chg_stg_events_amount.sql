@@ -15,4 +15,9 @@ renamed_casted AS (
     GROUP BY 1
     )
 
-SELECT * FROM renamed_casted
+SELECT count(user_id)
+    , SUM(page_view_amount)
+    , SUM(add_to_cart_amount)
+    , SUM(checkout_amount)
+    , SUM(package_shipped_amount) 
+FROM renamed_casted

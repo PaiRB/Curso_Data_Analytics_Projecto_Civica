@@ -12,7 +12,7 @@ WITH src_sql_products AS (
 renamed as (
     select
         product_id
-        , price AS price_$
+        , CAST(price AS NUMBER(38,2)) AS price_$
         , name
         , inventory
     from src_sql_products

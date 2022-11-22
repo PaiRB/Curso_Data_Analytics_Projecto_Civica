@@ -6,7 +6,7 @@
 
 WITH src_sql_addresses AS (
     SELECT * 
-    FROM {{ source('src_sql_server_dbo', 'addresses') }}
+    FROM {{ ref('base_sql_server_dbo_addresses') }}
     ),
 
 renamed_casted AS (
