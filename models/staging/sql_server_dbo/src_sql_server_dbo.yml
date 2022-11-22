@@ -1,0 +1,257 @@
+version: 2
+
+sources:
+
+  - name: src_sql_server_dbo
+    schema: sql_server_dbo
+    description: "Schema con los tablas de sql sever"
+    database: |  
+      {%- if  target.name == 'user_dev' -%} dev_bronze_db_alumno23
+      {%- elif target.name == 'ci' -%} dev_bronze_db_alumno23 
+      {%- elif target.name == 'pro'-%} pro_bronze_db_alumno23 
+      {%- else -%} {{target.database}}_bronze_db_alumnoa23
+      {%- endif -%}
+
+    quoting:
+      database: false
+      schema: false
+      identifier: false
+
+    tables:
+      - name: addresses
+        description: "Tabla con las direcciones de los clientes"
+        columns:
+          - name: address_id
+            description: "Primary key - id de las distintas direcciones"
+            tests:
+              - unique
+              - not_null
+          - name: zipcode
+            description: "Codigo postal"
+          - name: country
+            description: "Pais al que pertenece cada direccion"
+          - name: address
+            description: "Descripcion de la direccion"
+          - name: state
+            description: "Estado al que pertenece cada direccion"
+          - name: _fivetran_deleted
+            description: ""
+          - name: _fivetran_synced
+            description: ""
+
+      - name: events
+        description: "Tabla de eventos de compra producidos"
+        columns:
+          - name: event_id
+            description: "Primary Key - id de los distintos eventos"
+            tests:
+              - unique
+              - not_null
+          - name: user_id
+            description: "Foreign Key - id de los usuarios"
+            tests:
+              - not_null
+              - relationships:
+                  to: source('sql_server_dbo','users')
+                  field: user_id
+          - name: session_id
+            description: "id de la sesion del navegador"
+          - name: product_id
+            description: "Foreign Key - id del producto comprado"
+            tests:
+              - not_null
+              - dbt_utils.relationships_where:
+                  to: source('sql_server_dbo','products')
+                  field: product_id
+                  where: product_id <> null
+          - name: created_at
+            description: "Fecha en la que se ha generado el registro"
+          - name: event_type
+            description: "Tipo de evento realizado"
+            tests:
+              - not_null
+          - name: order_id
+            description: "Foreign Key - id de la orden de compra"
+            tests:
+              - not_null
+              - dbt_utils.relationships_where:
+                  to: source('sql_server_dbo','orders')
+                  field: order_id
+                  where: order_id <> null
+          - name: page_url
+            description: "Link de la pagina del producto"
+          - name: _fivetran_deleted
+            description: ""
+          - name: _fivetran_synced
+            description: ""
+
+      - name: order_items
+        description: "Tabla con el contenido de los productos comprados"
+        columns:
+          - name: order_id
+            description: "Primary Key pt1 - id de la orden de compra"
+            tests:
+              - not_null
+          - name: product_id
+            description: "Primary Key pt2 - id del producto comprado"
+            tests:
+              - not_null
+              - relationships:
+                  to: source('sql_server_dbo','products')
+                  field: product_id
+          - name: quantity
+            description: "Cantidad de producto comprado"
+            tests:
+              - not_null
+              - dbt_utils.expression_is_true:
+                  expression: '>= 1'
+          - name: _fivetran_deleted
+            description: ""
+          - name: _fivetran_synced
+            description: ""
+
+      - name: orders
+        description: "Tabla con los pedidos realizados"
+        columns:
+          - name: order_id
+            description: "Primary key - id de la orden de compra"
+            tests:
+              - unique
+              - not_null
+          - name: tracking_id
+            description: ""
+          - name: order_cost
+            description: "Coste de los productos"
+            test:
+              - dbt_utils.expression_is_true:
+                  expression: '>= 0'
+          - name: promo_id
+            description: "id de la promocion"
+            test:
+              - dbt_utils.relationships_where:
+                  to: source('sql_server_dbo','promo')
+                  field: promo_id
+                  where: promo_id <> null
+          - name: order_total
+            description: "Coste total de la compra"
+            test:
+              - dbt_utils.expression_is_true:
+                  expression: '>= 0'
+          - name: shipping_cost
+            description: "Coste del envio de los productos"
+            test:
+              - dbt_utils.expression_is_true:
+                  expression: '>= 0'
+          - name: shipping_service
+            description: "Compañia del envío"
+          - name: delivered_at
+            description: "Fecha del envio"
+          - name: estimated_delivery_at
+            description: "Fecha estimada de llegada"
+            test:
+              - not_null
+          - name: created_at
+            description: "Fecha del creación del pedido"
+            test:
+              - not_null
+          - name: user_id
+            description: "Foreign Key - id de usuario"
+            tests:
+              - not_null
+              - relationships:
+                  to: source('sql_server_dbo','users')
+                  field: user_id
+          - name: status
+            description: "Descripcion del estado del pedido"
+          - name: address_id
+            description: "Foreign Key - id de la direccion"
+            tests:
+              - not_null
+          - name: _fivetran_deleted
+            description: ""
+          - name: _fivetran_synced
+            description: ""
+
+      - name: products
+        description: "Tabla que contiene los productos de la tienda"
+        columns:
+          - name: product_id
+            description: "Primary Key - id de los productos"
+            tests:
+              - unique
+              - not_null
+          - name: price
+            description: "Precio del producto"
+            tests:
+              - not_null
+              - dbt_utils.expression_is_true:
+                  expression: '>= 0'
+          - name: name
+            description: "Nombre del producto"
+            test:
+              - not_null
+          - name: inventory
+            description: "Cantidad de producto en el almacen"
+            tests:
+              - not_null
+              - dbt_utils.expression_is_true:
+                  expression: '>= 0'
+          - name: _fivetran_deleted
+            description: ""
+          - name: _fivetran_synced
+            description: ""
+
+      - name: promos
+        description: "Tabla que contiene los datos sobre las promociones y su estado"
+        columns:
+          - name: promo_id
+            description: "Primary Key - id de la promocion"
+            tests:
+              - unique
+              - not_null
+          - name: status
+            description: "Estado Activo/Inactivo"
+          - name: discount
+            description: "Porcentaje de la rebaja"
+          - name: _fivetran_deleted
+            description: ""
+          - name: _fivetran_synced
+            description: ""
+
+      - name: users
+        description: "Tabla que contiene los datos de los clientes"
+        columns:
+          - name: user_id
+            description: "Primary Key - id de los clientes"
+            tests:
+              - unique
+              - not_null
+          - name: first_name
+            description: "Nombre del cliente"
+            Test:
+              - not_null
+          - name: updated_at
+            description: ""
+          - name: last_name
+            description: "Apellidos del cliente"
+          - name: total_orders
+            description: "Total de compras realizadas por el cliente"
+            Test:
+            - dbt_utils.expression_is_true:
+                  expression: '>= 0'
+          - name: created_at
+            description: ""
+          - name: phone_number
+            description: "Numero de telefono"
+          - name: email
+            description: "Email personal"
+          - name: address_id
+            description: "Foreign Key - id de la direccion del cliente"
+            test:
+              - relationships:
+                  to: source('sql_server_dbo','addresses')
+                  field: address_id
+          - name: _fivetran_deleted
+            description: ""
+          - name: _fivetran_synced
+            description: ""

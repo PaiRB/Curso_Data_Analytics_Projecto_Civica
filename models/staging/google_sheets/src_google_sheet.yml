@@ -1,0 +1,45 @@
+version: 2
+
+sources:
+
+  - name: src_google_sheets # name of the source
+    description: >
+      Raw data de la tabla budget. 
+    schema: google_sheets # this is the schema our raw data lives in
+    database: |  
+        {%- if  target.name == 'user_dev' -%} dev_bronze_db_alumno23
+        {%- elif target.name == 'ci' -%} dev_bronze_db_alumno23 
+        {%- elif target.name == 'pro'-%} pro_bronze_db_alumno23 
+        {%- else -%} {{target.database}}_bronze_db_alumnoa23
+        {%- endif -%}
+
+    quoting:
+      database: false
+      schema: false
+      identifier: false
+
+    tables:
+
+      - name: budget
+        loaded_at_field: _fivetran_synced
+        columns:
+          - name: _row
+            description: >
+              Numero de cada fila del google_sheet se utiliza como id
+            tests:
+              - unique
+              - not_null
+          - name: product_id
+            description: >
+              UUID de cada producto distinto
+            tests:
+              - relationships:
+                  to: source('sql_server_dbo','products')
+                  field: product_id
+          - name: quantity
+            description: >
+              Cantidad almacenada de cada producto
+          - name: month
+            description: >
+              Fecha en formato dd-mm-aaaa
+          - name: _fivetran_synced
