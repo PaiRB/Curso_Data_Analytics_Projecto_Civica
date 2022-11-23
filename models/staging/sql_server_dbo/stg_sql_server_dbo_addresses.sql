@@ -5,12 +5,13 @@ WITH src_sql_addresses AS (
 
 renamed_casted AS (
     SELECT
-          address_id
-        , zipcode 
-        , country 
-        , address 
-        , state
+          TRIM(address_id) AS address_id
+        , TRIM(zipcode) AS zipcode 
+        , TRIM(country) AS country 
+        , TRIM(address) AS address 
+        , TRIM(state) AS state
     FROM src_sql_addresses
     )
 
 SELECT * FROM renamed_casted
+ORDER BY zipcode
