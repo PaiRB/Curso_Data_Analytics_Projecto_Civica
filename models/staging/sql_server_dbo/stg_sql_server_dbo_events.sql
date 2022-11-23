@@ -17,4 +17,24 @@ renamed as (
     from src_sql_events
 )
 
-select * from renamed
+/*
+select count(DISTINCT(order_id)) AS Num_pedidos_distintos
+from renamed
+*/
+
+/*
+select event_id, user_id, event_type, order_id 
+
+from renamed
+
+WHERE order_id <> ''
+ORDER BY order_id
+*/
+
+select COUNT(event_type)
+FROM renamed
+WHERE event_type = 'checkout'
+UNION
+select COUNT(event_type)
+FROM renamed
+WHERE event_type = 'package_shipped'

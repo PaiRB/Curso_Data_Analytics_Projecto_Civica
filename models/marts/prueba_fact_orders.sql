@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized='ephemeral'
+  )
+}}
+
 WITH test_fact_orders AS (
     SELECT * 
     FROM {{ ref('fact_orders') }}
@@ -11,11 +17,11 @@ prueba as (
     , promo_id
     , discount
     , status
-    , price_$
+    , price
     , quantity
-    , order_cost_$
-    , shipping_cost_$
-    , order_total_$
+    , order_cost
+    , shipping_cost
+    , order_total
     FROM test_fact_orders
 )
 
@@ -25,8 +31,8 @@ select DISTINCT(user_id)
 */
 
 select user_id
-    , ROUND((SUM(order_cost_$)+shipping_cost_$),2) AS Total
+    , ROUND((SUM(order_cost)+shipping_cost),2) AS Total
     from prueba
 
-group by user_id, shipping_cost_$
+group by user_id, shipping_cost
 order by Total DESC

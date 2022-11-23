@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized='ephemeral'
+  )
+}}
+
 WITH calculo_users AS (
     SELECT * 
     FROM {{ ref('stg_sql_server_dbo_users') }}
