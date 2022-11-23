@@ -6,16 +6,17 @@
 
 with source as (
 
-    select * from {{ source('src_sql_server_dbo', 'order_items') }}
+    select * from {{ source('src_sql_server_dbo', 'products') }}
 
 ),
 
 renamed as (
 
     select
-        order_id,
         product_id,
-        quantity,
+        price,
+        name,
+        inventory,
         _fivetran_deleted,
         _fivetran_synced
 

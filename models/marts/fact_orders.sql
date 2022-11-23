@@ -80,12 +80,13 @@ SELECT o.order_id
     , oit.product_id
     , o.user_id
     , o.address_id
+    , o.order_date
     , o.promo_id
     , coalesce(pro.discount, 0) AS discount --sirve para lo mismo que poner un case when para quitar los nulos y sustituirlos por ceros.
     , o.status
     , p.price_$
     , oit.quantity
-    , (p.price_$*oit.quantity) AS order_cost_$
+    , (p.price*oit.quantity) AS order_cost_$
     , o.shipping_cost_$
     /*
     , CASE

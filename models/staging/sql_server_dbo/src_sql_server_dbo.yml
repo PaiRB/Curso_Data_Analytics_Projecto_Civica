@@ -118,6 +118,9 @@ sources:
             tests:
               - unique
               - not_null
+              - relationships:
+                  to: source('sql_server_dbo','order_items')
+                  field: order_id
           - name: tracking_id
             description: ""
           - name: order_cost

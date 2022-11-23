@@ -1,12 +1,6 @@
-{{
-  config(
-    materialized='table'
-  )
-}}
-
 WITH src_sql_promos AS (
     SELECT * 
-    FROM {{ source('src_sql_server_dbo', 'promos') }}
+    FROM {{ ref('base_sql_server_dbo_promos') }}
     ),
 
 renamed as  (

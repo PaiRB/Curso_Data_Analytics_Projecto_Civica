@@ -1,12 +1,6 @@
-{{
-  config(
-    materialized='table'
-  )
-}}
-
 WITH src_sql_orders AS (
     SELECT * 
-    FROM {{ source('src_sql_server_dbo', 'orders') }}
+    FROM {{ ref('base_sql_server_dbo_orders') }}
     ),
 
 renamed_casted AS (
@@ -16,11 +10,10 @@ renamed_casted AS (
         , address_id
         , promo_id
         , status
-        , order_total AS order_total_$
-        , order_cost AS order_cost_$
-        , shipping_cost AS shipping_cost_$
-        , shipping_service 
-
+        , order_total
+        , order_cost
+        , shipping_cost
+        , shipping_service
         , created_at ::DATE AS order_date
         , created_at ::TIME AS order_time_hour
         , delivered_at
