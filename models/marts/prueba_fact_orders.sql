@@ -19,8 +19,13 @@ prueba as (
     FROM test_fact_orders
 )
 
+/*
+select DISTINCT(user_id)
+    from prueba
+*/
+
 select user_id
-    , (SUM(order_cost_$)+shipping_cost_$) AS Total
+    , ROUND((SUM(order_cost_$)+shipping_cost_$),2) AS Total
     from prueba
 
 group by user_id, shipping_cost_$

@@ -1,9 +1,3 @@
-{{
-  config(
-    materialized='table'
-  )
-}}
-
 WITH src_sql_orderitems AS (
     SELECT * 
     FROM {{ ref('base_sql_server_dbo_orderitems') }}

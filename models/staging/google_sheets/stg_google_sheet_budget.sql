@@ -14,7 +14,8 @@ renamed_casted AS (
           _row AS budget_id
         , product_id
         , quantity
-        , month
+        , monthname(month) as month_desc
+        , year(month) as year_desc
     FROM stg_budget
     )
 
