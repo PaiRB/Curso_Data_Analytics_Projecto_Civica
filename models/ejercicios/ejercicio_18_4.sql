@@ -13,5 +13,5 @@ WITH calculos_en_events AS (
     )
 
 SELECT AVG(num_session) AS Sesiones_Hora
-FROM calculos_en_events;
+FROM calculos_en_events
 

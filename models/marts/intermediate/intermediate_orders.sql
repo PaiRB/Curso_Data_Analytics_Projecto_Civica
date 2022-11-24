@@ -34,10 +34,13 @@ orders as (
         , order_total
         , status
         , shipping_cost
-        , shipping_service 
-        , order_date
-        , order_time_hour
+        , shipping_service
+        , created_at 
+        , created_date
+        , created_time_hour
         , delivered_at
+        , delivered_date
+        , delivered_time_hour
         , estimated_delivery_at
     from fact_order_orders
 ),
@@ -80,21 +83,21 @@ SELECT o.order_id
     , oit.product_id
     , o.user_id
     , o.address_id
-    , o.order_date
     , o.promo_id
-    , coalesce(pro.discount, 0) AS discount --sirve para lo mismo que poner un case when para quitar los nulos y sustituirlos por ceros.
+    , coalesce(pro.discount, 0) AS discount
     , o.status
     , p.price
     , oit.quantity
-    , (p.price*oit.quantity) AS order_cost_$
+    , (p.price*oit.quantity) AS order_cost
     , o.shipping_cost
-    /*
-    , CASE
-        WHEN pro.discount IS NULL THEN ((p.price_$*oit.quantity)+o.shipping_cost_$)
-        ELSE (((p.price_$*oit.quantity)+o.shipping_cost_$)-pro.discount)
-        END AS total_cost_$
-    */
     , o.order_total
+    , created_at 
+    , created_date
+    , created_time_hour
+    , delivered_at
+    , delivered_date
+    , delivered_time_hour
+    , estimated_delivery_at
 
 FROM orders o 
     JOIN orderitems oit

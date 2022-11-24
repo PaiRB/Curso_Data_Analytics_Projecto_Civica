@@ -11,11 +11,12 @@ WITH stg_budget AS (
 
 renamed_casted AS (
     SELECT
-          _row AS budget_id
-        , product_id
+          TRIM(_row) AS budget_id
+        , TRIM(product_id) AS product_id 
         , quantity
-        , monthname(month) as month_desc
-        , year(month) as year_desc
+        , month AS date
+        , monthname(month) AS month_desc
+        , year(month) AS year_desc
     FROM stg_budget
     )
 

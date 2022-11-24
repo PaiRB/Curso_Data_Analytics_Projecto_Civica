@@ -10,10 +10,13 @@ models:
       - name: zipcode
         description: ""
 
-      - name: country
+      - name: address
+        description: ""      
+
+      - name: city
         description: ""
 
-      - name: address
+      - name: country
         description: ""
 
       - name: state
@@ -97,13 +100,22 @@ models:
       - name: shipping_service
         description: ""
 
-      - name: order_date
+      - name: created_at
         description: ""
 
-      - name: order_time_hour
+      - name: created_date
+        description: ""
+
+      - name: created_time_hore
         description: ""
 
       - name: delivered_at
+        description: ""
+
+      - name: delivered_date
+        description: ""
+
+      - name: delivered_time_hore
         description: ""
 
       - name: estimated_delivery_at
@@ -132,6 +144,9 @@ models:
     description: ""
     columns:
       - name: promo_id
+        description: ""
+
+      - name: desc_promo
         description: ""
 
       - name: status

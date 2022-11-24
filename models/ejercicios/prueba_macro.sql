@@ -10,31 +10,16 @@ WITH stg_events AS (
     FROM {{ ref('base_sql_server_dbo_events') }}
     ),
 
-datos_user AS (
-    SELECT 
-      *
-    FROM {{ ref('base_sql_server_dbo_users') }}
-    ),
-
 renamed_casted AS (
     SELECT
-        e.user_id
-        , e.session_id
-        , d.first_name
-        , d.last_name
-        , d.email
-        , min(e.created_at) as inicio_session
-        , max(e.created_at) as fin_session
-        , datediff(minute, min(e.created_at), max(e.created_at)) AS minutos_duracion 
+        user_id
         ,
         {%- for event_type in event_types   %}
         coalesce(sum(case when event_type = '{{event_type}}' then 1 end),0) as {{event_type}}
         {%- if not loop.last %},{% endif -%}
         {% endfor %}
-    FROM stg_events e
-    JOIN datos_user d
-    ON e.user_id = d.user_id
-    GROUP BY e.user_id, e.session_id, d.first_name, d.last_name, d.email
+    FROM stg_events 
+    GROUP BY user_id
     )
 
 SELECT * FROM renamed_casted
