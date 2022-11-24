@@ -9,6 +9,7 @@ renamed as (
         , TRIM(user_id) AS user_id
         , TRIM(session_id) AS session_id
         , TRIM(product_id) AS product_id
+        , created_at
         , created_at ::DATE AS Created_at_date
         , created_at ::TIME AS Created_at_time
         , TRIM(event_type) as event_type

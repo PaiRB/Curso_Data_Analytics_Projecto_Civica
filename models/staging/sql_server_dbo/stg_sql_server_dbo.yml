@@ -2,209 +2,214 @@ version: 2
 
 models:
   - name: stg_sql_server_dbo_addresses
-    description: ""
+    description: "Tabla que contiene los datos de direcciones de envío y de usuarios"
     columns:
       - name: address_id
-        description: ""
+        description: "Primary Key de la tabla addresses"
         tests:
           - unique
           - not_null
 
       - name: zipcode
-        description: "Atributo: Desc. del código postal de la dirección"
+        description: "Atributo - Desc. del código postal de la dirección"
 
       - name: address
-        description: "Atributo: Desc. de la dirección"      
+        description: "Atributo - Desc. de la dirección"      
 
       - name: city
-        description: "Atributo: Desc. del nombre ciudad añadido a la tabla a partir de una seed"
+        description: "Atributo - Desc. del nombre ciudad añadido a la tabla a partir de una seed"
 
       - name: country
-        description: "Atributo: Desc. del nombre pais a donde pertenece la dirección"
+        description: "Atributo - Desc. del nombre pais a donde pertenece la dirección"
 
       - name: state
-        description: "Atributo: Desc. del nombre estado al que pertenece la dirección"
+        description: "Atributo - Desc. del nombre estado al que pertenece la dirección"
 
 #########################################################
 
   - name: stg_sql_server_dbo_events
-    description: ""
+    description: "Futura tabla de hechos Events, contiene información sobre el tráfico en la página web y los pedidos generados"
     columns:
       - name: event_id
-        description: ""
+        description: "Primary Key de la tabla events"
         tests:
           - unique
           - not_null
           
       - name: user_id
-        description: ""
+        description: "Foreign Key del id de users"
 
       - name: session_id
-        description: ""
+        description: "Atributo - código identificador de la sesión web"
 
       - name: product_id
-        description: ""
+        description: "Foreign Key del id de products"
+
+      - name: created_at
+        description: "Atributo - Fecha y hora en la que se ha generado el evento"
 
       - name: created_at_date
-        description: ""
+        description: "Atributo - Desc. de la fecha en la que se ha generado el evento "
 
       - name: created_at_time
-        description: ""
+        description: "Atributo - Desc. de la hora en la que se ha generado el evento"
 
       - name: event_type
-        description: ""
+        description: "Atributo - Desc. del tipo de evento"
 
       - name: order_id
-        description: ""
+        description: "Foreign Key del id de orders, este campo va a retirarse"
 
       - name: url
-        description: ""          
+        description: "Atributo - Desc. de las URL que han visitado los clientes"          
 
 #########################################################
 
   - name: stg_sql_server_dbo_orderitems
-    description: ""
+    description: "Tabla que enlaza la tabla orders y la tabla products, contiene información sobre la cantidad de producto comprado en cada order"
     columns:
       - name: order_id
-        description: ""
+        description: "Primera parte de la Primary Key compuesta de la tabla order-items"
         tests:
           - not_null
           
       - name: product_id
-        description: ""
+        description: "Segunda parte de la Primary Key de la tabla order-items"
         tests:
           - not_null
           
       - name: quantity
-        description: ""
+        description: "Atributo métrica - Cantidad de productos comprados en cada order"
 
 #########################################################
 
   - name: stg_sql_server_dbo_orders
-    description: ""
+    description: "Futura tabla de hechos Orders, contiene toda la información sobre los pedidos realizados"
     columns:
       - name: order_id
-        description: ""
+        description: "Primary Key de la tabla orders"
         tests:
           - unique
           - not_null
           
       - name: user_id
-        description: ""
+        description: "Foreign Key del id de users"
 
       - name: address_id
-        description: ""
+        description: "Foreign Key del id de addresses"
 
       - name: promo_id
-        description: ""
+        description: "Foreign Key del id de promos"
 
       - name: status
-        description: ""
+        description: "Atributo -  Desc. del estado del order"
 
       - name: order_total
-        description: ""
+        description: "Atributo métrica - "
 
       - name: order_cost
-        description: ""
+        description: "Atributo métrica - "
 
       - name: shipping_cost
-        description: ""
+        description: "Atributo métrica - "
 
       - name: shipping_service
-        description: ""
+        description: "Atributo - "
 
       - name: created_at
-        description: ""
+        description: "Atributo -  Desc. de la fecha y hora en la que se ha generado la orden de pedido"
 
       - name: created_date
-        description: ""
+        description: "Atributo -  Desc. de la fecha en la que se ha generado la orden de pedido"
 
-      - name: created_time_hore
-        description: ""
+      - name: created_time_hour
+        description: "Atributo -  Desc. de la hora en la que se ha generado la orden de pedido"
 
       - name: delivered_at
-        description: ""
+        description: "Atributo -  Desc. de la fecha y hora en la que se ha recogido/entregado el producto"
 
       - name: delivered_date
-        description: ""
+        description: "Atributo - Desc. de la fecha en la que se ha recogido/entregado el producto"
 
       - name: delivered_time_hore
-        description: ""
+        description: "Atributo - Desc. de la hora en la que se ha recogido/entregado el producto"
 
       - name: estimated_delivery_at
-        description: ""
+        description: "Atributo - Fecha y hora estimada para la recogida/entrega del producto"
 
 #########################################################
 
   - name: stg_sql_server_dbo_products
-    description: ""
+    description: "Tabla que contiene los datos sobre los productos"
     columns:
       - name: product_id
-        description: ""
+        description: "Primary Key de la tabla products"
         tests:
           - unique
           - not_null
           
       - name: price
-        description: ""
+        description: "Atributo métrica - "
 
       - name: name
-        description: ""
+        description: "Atributo - Desc. del nombre del producto"
 
       - name: inventory
-        description: ""
+        description: "Atributo métrica - "
 
 #########################################################
 
   - name: stg_sql_server_dbo_promos
-    description: ""
+    description: "Tabla que contiene los datos sobre las promociones aplicadas a los productos"
     columns:
       - name: promo_id
-        description: ""
+        description: "Primary Key de la tabla promo, generada como hash a partir del campo desc_promo"
         tests:
           - unique
           - not_null
           
       - name: desc_promo
-        description: ""
+        description: "Atributo - Desc. del nombre de la promoción aplicada"
 
       - name: status
-        description: ""
+        description: "Atributo - Desc. del estado de la promoción - ACTIVE/INACTIVE"
 
       - name: discount
-        description: ""
+        description: "Atributo métrica - "
 
 #########################################################      
 
   - name: stg_sql_server_dbo_users
-    description: ""
+    description: "Tabla que contiene los datos sobre los usuarios/clientes"
     columns:
       - name: user_id
-        description: ""
+        description: "Primary Key de la tabla users"
         tests:
           - unique
           - not_null
           
       - name: first_name
-        description: ""
+        description: "Atributo - Desc. del nombre del usuario"
 
       - name: last_name
-        description: ""
+        description: "Atributo - Desc. del apellido del usuario"
 
       - name: total_orders
-        description: ""
+        description: "Atributo métrica - "
 
       - name: created_at
-        description: ""
+        description: "Atributo - Desc. de la fecha y hora en la que se ha generado el registro de usuario"
 
       - name: updated_at
-        description: ""
+        description: "Atributo - Desc. de la fecha y hora en la que se ha actualizado el registro de usuario"
 
       - name: phone_number
-        description: ""
+        description: "Atributo - Desc. del número de teléfono del usuario"
 
       - name: email
-        description: ""
+        description: "Atributo - Desc. del email del usuario"
+        test:
+          - unique
 
       - name: address_id
-        description: ""
+        description: "Foreign Key del id de addresses"
