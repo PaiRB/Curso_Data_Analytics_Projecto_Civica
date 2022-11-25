@@ -5,9 +5,9 @@ WITH src_sql_products AS (
 
 renamed as (
     select
-        product_id
+        TRIM(product_id) AS product_id
         , CAST(price AS NUMBER(38,2)) AS price
-        , name
+        , TRIM(name) as name
         , inventory
     from src_sql_products
 )

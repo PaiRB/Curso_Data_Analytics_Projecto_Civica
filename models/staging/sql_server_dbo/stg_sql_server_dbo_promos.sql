@@ -5,8 +5,9 @@ WITH src_sql_promos AS (
 
 renamed as  (
     select
-        promo_id
-        , status
+        md5 (promo_id) as promo_id
+        , TRIM(promo_id) as desc_promo
+        , TRIM(status) as status
         , CAST(discount AS int) AS discount
     from src_sql_promos
 )

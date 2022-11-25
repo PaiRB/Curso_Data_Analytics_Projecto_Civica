@@ -51,3 +51,4 @@ SELECT u.user_id
 FROM users u 
     LEFT JOIN calculo_orders co
     ON u.user_id = co.user_id
+

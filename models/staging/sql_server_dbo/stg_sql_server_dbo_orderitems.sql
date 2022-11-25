@@ -6,8 +6,8 @@ WITH src_sql_orderitems AS (
 renamed as (
 
     select
-        order_id
-        , product_id
+        TRIM(order_id) AS order_id
+        , TRIM(product_id) AS product_id
         , quantity
     from src_sql_orderitems
 

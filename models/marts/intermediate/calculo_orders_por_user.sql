@@ -4,32 +4,25 @@
   )
 }}
 
-WITH calculo_users AS (
-    SELECT * 
+WITH dato_users AS (
+    SELECT 
+      *
     FROM {{ ref('stg_sql_server_dbo_users') }}
     ),
 
-    calculo_orders AS (
-    SELECT * 
-    FROM {{ ref('stg_sql_server_dbo_orders') }}
-    ),
-
-users AS (
+calculos_orders AS (
     SELECT
         user_id
-    FROM calculo_users
-),
+        , COUNT(order_id) AS num_orders
+    FROM {{ ref('base_sql_server_dbo_orders') }}
+    GROUP BY 1
+    )
 
-orders AS (
-    SELECT 
-        order_id,
-        user_id
-    FROM calculo_orders
-)
+SELECT
+    d.user_id
+    , coalesce(num_orders, 0) AS num_orders
+FROM calculos_orders c
+    RIGHT JOIN dato_users d
+    ON c.user_id = d.user_id
 
-SELECT DISTINCT(u.user_id)
-    , COUNT(o.order_id) AS num_orders
-FROM orders o 
-    JOIN users u
-    ON o.user_id = u.user_id
-GROUP BY u.user_id
+  
