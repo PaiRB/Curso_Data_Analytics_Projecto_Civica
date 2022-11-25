@@ -13,7 +13,7 @@ renamed_casted AS (
     SELECT
           TRIM(_row) AS budget_id
         , TRIM(product_id) AS product_id 
-        , quantity AS stimated_sales
+        , quantity
         , month AS date
         , monthname(month) AS month_desc
         , year(month) AS year_desc
