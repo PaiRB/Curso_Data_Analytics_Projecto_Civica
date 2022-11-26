@@ -19,7 +19,7 @@ WITH prueba_orders AS (
     FROM {{ ref('intermediate_orders') }}
     GROUP BY order_id, shipping_cost, discount, order_total, shipping_service
     )
-
+/*
 --ESTA CONSULTA FUNCIONA Y DA EL RESULTADO CORRECTO, NO BORRAR
 SELECT 
     order_id
@@ -29,12 +29,11 @@ SELECT
     , ((order_cost+shipping_cost)-discount) AS total_order
 FROM prueba_orders
 GROUP BY order_id, order_cost, shipping_cost, discount
+*/
 
 
-/*
 --ESTA CONSULTA FUNCIONA Y DA EL RESULTADO CORRECTO, NO BORRAR
 SELECT 
     DISTINCT order_id
     , order_total
 FROM prueba_orders
-*/
