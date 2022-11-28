@@ -1,10 +1,4 @@
 
-{{
-  config(
-    materialized='table'
-  )
-}}
-
 WITH src_budget_products AS (
     SELECT * 
     FROM {{ source('src_google_sheets', 'budget') }}
