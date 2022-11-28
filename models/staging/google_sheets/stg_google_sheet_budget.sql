@@ -17,6 +17,8 @@ renamed_casted AS (
         , month AS date
         , monthname(month) AS month_desc
         , year(month) AS year_desc
+        , _fivetran_synced
+        , _
     FROM stg_budget
     )
 

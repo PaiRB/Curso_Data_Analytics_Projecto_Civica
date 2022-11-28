@@ -22,7 +22,9 @@ users as (
         , last_name
         , total_orders
         , created_at
+        , created_date
         , updated_at
+        , updated_date
         , phone_number
         , email
         , address_id
@@ -46,9 +48,10 @@ SELECT u.user_id
     , u.email
     , u.address_id
     , u.created_at
+    , u.created_date
     , u.updated_at
+    , u.updated_date
 
 FROM users u 
     LEFT JOIN calculo_orders co
     ON u.user_id = co.user_id
-

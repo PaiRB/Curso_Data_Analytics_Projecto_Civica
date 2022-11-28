@@ -100,21 +100,25 @@ models:
 
       - name: promo_id
         description: "Foreign Key del id de promos"
+        test:
+          - relationships:
+              to: ref('stg_sql_server_dbo_promos')
+              field: promo_id
 
       - name: status
         description: "Atributo -  Desc. del estado del order"
 
       - name: order_total
-        description: "Atributo métrica - "
+        description: "Atributo métrica - Coste total del pedido en USD"
 
       - name: order_cost
-        description: "Atributo métrica - "
+        description: "Atributo métrica - Coste del pedido en USD sin tener en cuenta shipping_cost ni promociones"
 
       - name: shipping_cost
-        description: "Atributo métrica - "
+        description: "Atributo métrica - Coste del envío del pedio"
 
       - name: shipping_service
-        description: "Atributo - "
+        description: "Atributo - Desc. del nombre de la compañía del envío"
 
       - name: created_at
         description: "Atributo -  Desc. de la fecha y hora en la que se ha generado la orden de pedido"
@@ -149,13 +153,13 @@ models:
           - not_null
           
       - name: price
-        description: "Atributo métrica - "
+        description: "Atributo métrica - Precio del "
 
       - name: name
         description: "Atributo - Desc. del nombre del producto"
 
       - name: inventory
-        description: "Atributo métrica - "
+        description: "Atributo métrica - Cantidad de producto en el almacén"
 
 #########################################################
 
@@ -175,7 +179,7 @@ models:
         description: "Atributo - Desc. del estado de la promoción - ACTIVE/INACTIVE"
 
       - name: discount
-        description: "Atributo métrica - "
+        description: "Atributo métrica - Número plano que se descuenta al coste del pedido"
 
 #########################################################      
 
@@ -195,7 +199,7 @@ models:
         description: "Atributo - Desc. del apellido del usuario"
 
       - name: total_orders
-        description: "Atributo métrica - "
+        description: "Atributo métrica - Número total de ordenes que ha realizado el usuario"
 
       - name: created_at
         description: "Atributo - Desc. de la fecha y hora en la que se ha generado el registro de usuario"

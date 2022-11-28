@@ -15,7 +15,9 @@ WITH fact_orders AS (
         , status
         , order_cost
         , created_at
+        , created_date
         , delivered_at
+        , delivered_date
         , estimated_delivery_at
     FROM {{ ref('intermediate_orders') }}
     )
