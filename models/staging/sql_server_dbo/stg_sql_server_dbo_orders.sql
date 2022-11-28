@@ -19,10 +19,8 @@ renamed_casted AS (
         , TRIM(shipping_service) AS shipping_service
         , created_at
         , created_at ::DATE AS created_date
-        , created_at ::TIME AS created_time_hour
         , delivered_at
         , delivered_at ::DATE AS delivered_date
-        , delivered_at ::TIME AS delivered_time_hour
         , estimated_delivery_at ::DATE AS estimated_delivery_at
         
     FROM src_sql_orders

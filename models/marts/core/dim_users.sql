@@ -20,9 +20,13 @@ users as (
         user_id
         , first_name
         , last_name
+        , sex
+        , age
         , total_orders
         , created_at
+        , created_date
         , updated_at
+        , updated_date
         , phone_number
         , email
         , address_id
@@ -41,14 +45,17 @@ calculo_orders as (
 SELECT u.user_id
     , u.first_name
     , u.last_name
+    , u.age
+    , u.sex
     , coalesce(co.num_orders, 0) AS total_orders
     , u.phone_number
     , u.email
     , u.address_id
     , u.created_at
+    , u.created_date
     , u.updated_at
+    , u.updated_date
 
 FROM users u 
     LEFT JOIN calculo_orders co
     ON u.user_id = co.user_id
-
