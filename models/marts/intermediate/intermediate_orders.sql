@@ -53,9 +53,6 @@ SELECT o.order_id
     , delivered_at
     , delivered_date
     , estimated_delivery_at
-    ---------------------------------------------------
-    --IGUAL DUDA PARA TODOS LOS CAMPOS DE HORAS
-    ---------------------------------------------------
 
 FROM fact_order_orders o 
     JOIN fact_order_orderitems oit

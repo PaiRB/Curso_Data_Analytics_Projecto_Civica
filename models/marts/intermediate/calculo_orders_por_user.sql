@@ -24,5 +24,4 @@ SELECT
 FROM calculos_orders c
     RIGHT JOIN dato_users d
     ON c.user_id = d.user_id
-
   
