@@ -3,12 +3,12 @@ WITH src_sql_users AS (
     FROM {{ ref('base_sql_server_dbo_users') }}
     ),
 
-age_sex AS (
+age_gender AS (
     SELECT
         user_id 
         , CAST(age AS NUMBER(38,0)) AS age  
-        , sex
-    FROM {{ref('age_sex_of_users')}}
+        , gender
+    FROM {{ref('age_gender_of_users')}}
 ),
 
 renamed as (
@@ -18,7 +18,7 @@ renamed as (
         , TRIM(first_name) AS first_name 
         , TRIM(last_name) AS last_name
         , age
-        , sex
+        , gender
         , total_orders
         , TRIM(phone_number) AS phone_number
         , TRIM(email) AS email
@@ -30,7 +30,7 @@ renamed as (
         , updated_at ::DATE AS updated_date
 
     from src_sql_users u 
-        join age_sex s
+        join age_gender s
         on u.user_id = s.user_id
 )
 

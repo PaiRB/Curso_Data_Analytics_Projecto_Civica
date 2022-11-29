@@ -20,8 +20,8 @@ users as (
         user_id
         , first_name
         , last_name
-        , sex
         , age
+        , gender
         , total_orders
         , created_at
         , created_date
@@ -45,8 +45,8 @@ calculo_orders as (
 SELECT u.user_id
     , u.first_name
     , u.last_name
+    , u.gender
     , u.age
-    , u.sex
     , coalesce(co.num_orders, 0) AS total_orders
     , u.phone_number
     , u.email

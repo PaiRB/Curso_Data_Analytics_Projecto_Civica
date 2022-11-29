@@ -50,10 +50,8 @@ SELECT o.order_id
     ---------------------------------------------------
     , created_at 
     , created_date
-    , created_time_hour
     , delivered_at
     , delivered_date
-    , delivered_time_hour
     , estimated_delivery_at
     ---------------------------------------------------
     --IGUAL DUDA PARA TODOS LOS CAMPOS DE HORAS
