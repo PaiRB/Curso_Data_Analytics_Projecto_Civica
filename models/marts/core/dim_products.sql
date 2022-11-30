@@ -5,6 +5,7 @@ WITH stg_sql_products AS (
 
 select 
     product_id
+    , natural_product_id
     , price_USD
     , provider_price_USD
     , name

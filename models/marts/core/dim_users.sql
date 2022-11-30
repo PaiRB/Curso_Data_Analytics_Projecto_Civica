@@ -1,6 +1,7 @@
 {{
   config(
-    materialized='table'
+    materialized='incremental',
+    unique_key = 'user_id'
   )
 }}
 
@@ -20,8 +21,8 @@ users as (
         user_id
         , first_name
         , last_name
-        , age
-        , gender
+        --, age // RETIRADO HASTA SOLUCIONAR INCREMENTAL
+        --, gender // RETIRADO HASTA SOLUCIONAR INCREMENTAL
         , total_orders
         , created_at
         , created_date
@@ -46,8 +47,8 @@ calculo_orders as (
 SELECT u.user_id
     , u.first_name
     , u.last_name
-    , u.gender
-    , u.age
+    --, u.gender // RETIRADO HASTA SOLUCIONAR INCREMENTAL
+    --, u.age // RETIRADO HASTA SOLUCIONAR INCREMENTAL
     , coalesce(co.num_orders, 0) AS total_orders
     , u.phone_number
     , u.email
@@ -61,3 +62,10 @@ SELECT u.user_id
 FROM users u 
     LEFT JOIN calculo_orders co
     ON u.user_id = co.user_id
+
+{% if is_incremental() %}
+
+  -- this filter will only be applied on an incremental run
+  where fivetran_synced > (select max(fivetran_synced) from {{ this }})
+
+{% endif %}

@@ -1,6 +1,7 @@
 {{
   config(
-    materialized='table'
+    materialized='incremental',
+    unique_key = 'shipping_id'
   )
 }}
 
@@ -22,3 +23,10 @@ SELECT
     , shipping_cost_USD
     , fivetran_synced
 FROM shipping
+
+{% if is_incremental() %}
+
+  -- this filter will only be applied on an incremental run
+  where fivetran_synced > (select max(fivetran_synced) from {{ this }})
+
+{% endif %}

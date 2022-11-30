@@ -1,3 +1,10 @@
+{{
+  config(
+    materialized='incremental',
+    unique_key='address_id'
+  )
+}}
+
 WITH stg_sql_addresses AS (
     SELECT * 
     FROM {{ ref('stg_sql_server_dbo_addresses') }}
@@ -12,13 +19,19 @@ zipcode_city AS (
 
 renamed_casted AS (
     SELECT
-          address_id
-        , a.zipcode AS zipcode
-        , address
-        , TRIM(z.primary_city) AS city
-        , country 
-        , state
-        , fivetran_synced
+      -- ids
+      address_id
+      , natural_address_id
+      
+      -- strings
+      , a.zipcode AS zipcode
+      , address
+      , TRIM(z.primary_city) AS city
+      , country 
+      , state
+
+      -- timestamps
+      , fivetran_synced
         
     FROM stg_sql_addresses a
         JOIN zipcode_city z
@@ -27,3 +40,10 @@ renamed_casted AS (
 
 SELECT * FROM renamed_casted 
 ORDER BY zipcode
+
+{% if is_incremental() %}
+
+  -- this filter will only be applied on an incremental run
+  where fivetran_synced > (select max(fivetran_synced) from {{ this }})
+
+{% endif %}
