@@ -19,6 +19,7 @@ renamed_casted AS (
         , country 
         , state
         , fivetran_synced
+        
     FROM stg_sql_addresses a
         JOIN zipcode_city z
         ON a.zipcode = z.zipcode
