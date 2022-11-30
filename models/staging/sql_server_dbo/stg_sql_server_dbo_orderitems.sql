@@ -15,8 +15,8 @@ renamed as (
     select
         -- ids
         md5(CONCAT(order_id,'-',product_id)) AS orderitem_id
-        , TRIM(order_id) AS order_id
-        , TRIM(product_id) AS product_id
+        , md5(TRIM(order_id)) AS order_id
+        , md5(TRIM(product_id)) AS product_id
 
         -- numerics
         , quantity

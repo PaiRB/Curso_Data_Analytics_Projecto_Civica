@@ -15,10 +15,10 @@ renamed as (
         -- ids
         md5(event_id) AS event_id
         , TRIM(event_id) AS natural_event_id
-        , TRIM(user_id) AS user_id
+        , md5(TRIM(user_id)) AS user_id
         , TRIM(session_id) AS session_id
-        , TRIM(product_id) AS product_id
-        , TRIM(order_id) AS order_id
+        , md5(TRIM(product_id)) AS product_id
+        , md5(TRIM(order_id)) AS order_id
 
         -- strings
         , TRIM(event_type) as event_type

@@ -17,10 +17,12 @@ stg_products AS (
 renamed_casted AS (
     SELECT
           b.budget_id
+          , b.natural_budget_id
+          , p.product_id
         , p.name 
         , b.quantity
-        , p.price
-        , ROUND((quantity*price),2) AS stimated_sales
+        , p.price_USD
+        , ROUND((quantity*price_USD),2) AS stimated_sales_USD
         , b.date
     FROM stg_budget b 
         JOIN stg_products p

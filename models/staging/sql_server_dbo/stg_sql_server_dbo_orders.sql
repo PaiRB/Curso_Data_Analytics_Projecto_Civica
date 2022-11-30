@@ -14,9 +14,9 @@ renamed_casted AS (
     SELECT
         -- ids
         md5 (order_id) AS order_id
-        , TRIM(order_id) AS natural_order_id
-        , TRIM(user_id) AS user_id
-        , TRIM(address_id) AS address_id
+        , md5(TRIM(order_id)) AS natural_order_id
+        , md5(TRIM(user_id)) AS user_id
+        , md5(TRIM(address_id)) AS address_id
         , CASE 
             WHEN promo_id = '' THEN ''
             ELSE md5 (promo_id)
