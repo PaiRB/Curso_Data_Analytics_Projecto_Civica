@@ -1,3 +1,8 @@
+{{
+  config(
+    materialized='view'
+  )
+}}
 
 WITH src_budget_products AS (
     SELECT * 

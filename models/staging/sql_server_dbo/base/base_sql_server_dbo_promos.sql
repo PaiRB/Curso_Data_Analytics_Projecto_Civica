@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized='view'
+  )
+}}
+
 with source as (
 
     select * from {{ source('src_sql_server_dbo', 'promos') }}
