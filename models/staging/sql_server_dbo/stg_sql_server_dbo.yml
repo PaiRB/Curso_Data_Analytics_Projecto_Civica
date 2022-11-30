@@ -5,10 +5,13 @@ models:
     description: "Tabla que contiene los datos de direcciones de envío y de usuarios"
     columns:
       - name: address_id
-        description: "Primary Key de la tabla addresses"
+        description: "Primary Key de la tabla addresses, generada como hash a partir del campo natural_address_id"
         tests:
           - unique
           - not_null
+
+      - name: natural_address_id
+        description: "Primary Key natural de la tabla addresses"
 
       - name: zipcode
         description: "Atributo - Desc. del código postal de la dirección"
@@ -24,17 +27,24 @@ models:
 
       - name: state
         description: "Atributo - Desc. del nombre estado al que pertenece la dirección"
+      
+      - name: fivetran_synced
+        description: "Atributo - Fecha de carga de la información"
 
 #########################################################
 
   - name: stg_sql_server_dbo_events
     description: "Futura tabla de hechos Events, contiene información sobre el tráfico en la página web y los pedidos generados"
     columns:
+
       - name: event_id
-        description: "Primary Key de la tabla events"
+        description: "Primary Key de la tabla events, generada como hash a partir del campo natural_event_id"
         tests:
           - unique
           - not_null
+
+      - name: natural_event_id
+        description: "Primary Key natural de la tabla events"
           
       - name: user_id
         description: "Foreign Key del id de users"
@@ -61,13 +71,22 @@ models:
         description: "Foreign Key del id de orders, este campo va a retirarse"
 
       - name: url
-        description: "Atributo - Desc. de las URL que han visitado los clientes"          
+        description: "Atributo - Desc. de las URL que han visitado los clientes"
+
+      - name: fivetran_synced
+        description: "Atributo - Fecha de carga de la información"          
 
 #########################################################
 
   - name: stg_sql_server_dbo_orderitems
     description: "Tabla que enlaza la tabla orders y la tabla products, contiene información sobre la cantidad de producto comprado en cada order"
     columns:
+      - name: orderitem_id
+        description: "Primary Key de la tabla orderitems, generada como hash a partir de los campos order_id+product_id"
+        tests:
+          - unique
+          - not_null
+
       - name: order_id
         description: "Primera parte de la Primary Key compuesta de la tabla order-items"
         tests:
@@ -81,16 +100,22 @@ models:
       - name: quantity
         description: "Atributo métrica - Cantidad de productos comprados en cada order"
 
+      - name: fivetran_synced
+        description: "Atributo - Fecha de carga de la información"
+
 #########################################################
 
   - name: stg_sql_server_dbo_orders
     description: "Futura tabla de hechos Orders, contiene toda la información sobre los pedidos realizados"
     columns:
       - name: order_id
-        description: "Primary Key de la tabla orders"
+        description: "Primary Key de la tabla events, generada como hash a partir del campo natural_order_id"
         tests:
           - unique
           - not_null
+
+      - name: natural_order_id
+        description: "Primary Key natural de la tabla orders"
           
       - name: user_id
         description: "Foreign Key del id de users"
@@ -108,13 +133,13 @@ models:
       - name: status
         description: "Atributo -  Desc. del estado del order"
 
-      - name: order_total
+      - name: order_total_USD
         description: "Atributo métrica - Coste total del pedido en USD"
 
-      - name: order_cost
+      - name: order_cost_USD
         description: "Atributo métrica - Coste del pedido en USD sin tener en cuenta shipping_cost ni promociones"
 
-      - name: shipping_cost
+      - name: shipping_cost_USD
         description: "Atributo métrica - Coste del envío del pedio"
 
       - name: shipping_service
@@ -126,40 +151,46 @@ models:
       - name: created_date
         description: "Atributo -  Desc. de la fecha en la que se ha generado la orden de pedido"
 
-      - name: created_time_hour
-        description: "Atributo -  Desc. de la hora en la que se ha generado la orden de pedido"
-
       - name: delivered_at
         description: "Atributo -  Desc. de la fecha y hora en la que se ha recogido/entregado el producto"
 
       - name: delivered_date
         description: "Atributo - Desc. de la fecha en la que se ha recogido/entregado el producto"
 
-      - name: delivered_time_hore
-        description: "Atributo - Desc. de la hora en la que se ha recogido/entregado el producto"
-
       - name: estimated_delivery_at
         description: "Atributo - Fecha y hora estimada para la recogida/entrega del producto"
+
+      - name: fivetran_synced
+        description: "Atributo - Fecha de carga de la información"
 
 #########################################################
 
   - name: stg_sql_server_dbo_products
-    description: "Tabla que contiene los datos sobre los productos"
+    description: "Tabla que contiene los datos sobre los productos, generada como hash a partir del campo natural_product_id"
     columns:
       - name: product_id
         description: "Primary Key de la tabla products"
         tests:
           - unique
           - not_null
+
+      - name: natural_product_id
+        description: "Primary Key natural de la tabla products"
           
-      - name: price
-        description: "Atributo métrica - Precio del "
+      - name: price_USD
+        description: "Atributo métrica - Precio del producto"
+      
+      - name: provider_price_USD
+        description: "Atributo métrica - Precio supuesto como precio del proveedor"
 
       - name: name
         description: "Atributo - Desc. del nombre del producto"
 
       - name: inventory
         description: "Atributo métrica - Cantidad de producto en el almacén"
+
+      - name: fivetran_synced
+        description: "Atributo - Fecha de carga de la información"
 
 #########################################################
 
@@ -181,16 +212,22 @@ models:
       - name: discount
         description: "Atributo métrica - Número plano que se descuenta al coste del pedido"
 
+      - name: fivetran_synced
+        description: "Atributo - Fecha de carga de la información"
+
 #########################################################      
 
   - name: stg_sql_server_dbo_users
     description: "Tabla que contiene los datos sobre los usuarios/clientes"
     columns:
       - name: user_id
-        description: "Primary Key de la tabla users"
+        description: "Primary Key de la tabla users, generada como hash a partir del campo natural_user_id"
         tests:
           - unique
           - not_null
+
+      - name: natural_user_id
+        description: "Primary Key natural de la tabla users"
           
       - name: first_name
         description: "Atributo - Desc. del nombre del usuario"
@@ -217,3 +254,6 @@ models:
 
       - name: address_id
         description: "Foreign Key del id de addresses"
+
+      - name: fivetran_synced
+        description: "Atributo - Fecha de carga de la información"
