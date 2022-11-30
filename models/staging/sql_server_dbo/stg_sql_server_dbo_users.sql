@@ -10,6 +10,9 @@ WITH src_sql_users AS (
     FROM {{ ref('base_sql_server_dbo_users') }}
     ),
 
+/*--------------------------------------------------
+----RETIRADO HASTA SOLUCIONAR LA INGESTA------------
+----------------------------------------------------
 age_gender AS (
     SELECT
         user_id 
@@ -17,7 +20,7 @@ age_gender AS (
         , gender
     FROM {{ref('age_gender_of_users')}}
 ),
-
+*/
 renamed as (
 
     select
@@ -28,13 +31,13 @@ renamed as (
         -- strings
         , TRIM(first_name) AS first_name 
         , TRIM(last_name) AS last_name
-        , gender
+        --, gender //RETIRADO HASTA SOLUCIONAR LA INGESTA
         , TRIM(phone_number) AS phone_number
         , TRIM(email) AS email
         , TRIM(address_id) AS address_id
 
         -- numerics
-        , age
+        --, age //RETIRADO HASTA SOLUCIONAR LA INGESTA
         , total_orders
 
         -- timestamps
@@ -45,8 +48,8 @@ renamed as (
         , _fivetran_synced ::timestamp_ltz AS fivetran_synced
 
     from src_sql_users u 
-        join age_gender s
-        on u.user_id = s.user_id
+        --join age_gender s
+        --on u.user_id = s.user_id
 )
 
 select * from renamed

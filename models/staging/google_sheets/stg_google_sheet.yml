@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: stg_google_sheet_budget
+    description: "Tabla que contiene los datos de las ventas esperadas por producto, agrupadas por meses"
+    columns:
+      - name: budget_id
+        description: "Primary Key de la tabla budget, generada como hash a partir del campo natural_budget_id"
+        tests:
+          - unique
+          - not_null
+
+      - name: natural_budget_id
+        description: "Primary Key natural de la tabla budget"
+
+      - name: product_id
+        description: "Foreign Key del id de products"
+
+      - name: quantity
+        description: "Atributo métrica - Cantidad vendida esperada de cada producto"      
+
+      - name: date
+        description: "Atributo - Desc. de la fecha de cierre del mes"
+
+      - name: month_desc
+        description: "Atributo - Desc. del nombre del mes del atributo date"
+
+      - name: year_desc
+        description: "Atributo - Desc. del año del atributo date"
+
+      - name: fivetran_synced
+        description: "Atributo - Fecha de carga de la información"

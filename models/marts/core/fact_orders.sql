@@ -1,6 +1,7 @@
 {{
   config(
-    materialized='table'
+    materialized='incremental',
+    unique_key = 'order_id'
   )
 }}
 
@@ -24,3 +25,10 @@ WITH fact_orders AS (
     )
 
 SELECT * FROM fact_orders
+
+{% if is_incremental() %}
+
+  -- this filter will only be applied on an incremental run
+  where fivetran_synced > (select max(fivetran_synced) from {{ this }})
+
+{% endif %}

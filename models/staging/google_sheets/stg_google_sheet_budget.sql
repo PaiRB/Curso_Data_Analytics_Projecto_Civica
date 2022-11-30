@@ -5,12 +5,6 @@
   )
 }}
 
-{{
-  config(
-    materialized='view'
-  )
-}}
-
 WITH stg_budget AS (
     SELECT * 
     FROM {{ ref('base_google_sheet_budget') }}
