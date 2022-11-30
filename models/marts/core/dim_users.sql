@@ -11,7 +11,9 @@ WITH ref_users AS (
     ),
 
 ref_calculo_orders AS (
-    SELECT * 
+    SELECT 
+        user_id
+        , num_orders
     FROM {{ ref('calculo_orders_por_user') }}
     ),
 
@@ -46,8 +48,8 @@ calculo_orders as (
 SELECT u.user_id
     , u.first_name
     , u.last_name
-    --, u.gender // RETIRADO HASTA SOLUCIONAR INCREMENTAL
-    --, u.age // RETIRADO HASTA SOLUCIONAR INCREMENTAL
+    --, gender // RETIRADO HASTA SOLUCIONAR INCREMENTAL
+    --, age // RETIRADO HASTA SOLUCIONAR INCREMENTAL
     , coalesce(co.num_orders, 0) AS total_orders
     , u.phone_number
     , u.email
