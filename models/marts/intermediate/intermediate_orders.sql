@@ -32,6 +32,7 @@ fact_order_promos AS (
 
 --ESTA CONSULTA FUNCIONA Y DA EL RESULTADO CORRECTO, NO BORRAR
 SELECT o.order_id
+    , o.natural_order_id
     , oit.product_id
     , o.user_id
     , o.address_id
@@ -63,4 +64,4 @@ FROM fact_order_orders o
     LEFT JOIN fact_order_promos pro
     ON o.promo_id = pro.promo_id
 
-ORDER BY o.order_id
+ORDER BY o.natural_order_id

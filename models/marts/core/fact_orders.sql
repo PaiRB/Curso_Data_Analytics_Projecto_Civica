@@ -25,6 +25,7 @@ WITH fact_orders AS (
     )
 
 SELECT * FROM fact_orders
+ORDER BY order_id
 
 {% if is_incremental() %}
 
