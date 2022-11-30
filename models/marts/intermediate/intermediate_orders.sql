@@ -38,7 +38,7 @@ SELECT o.order_id
     , o.promo_id
     , coalesce(pro.discount, 0) AS discount
     , o.status
-    , p.price
+    , p.price_USD
     , oit.quantity
     , (p.price*oit.quantity) AS order_cost
     , CONCAT(o.order_id,'-',md5(o.shipping_cost)) AS shipping_id

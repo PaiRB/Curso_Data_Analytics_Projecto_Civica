@@ -5,8 +5,8 @@ WITH stg_sql_products AS (
 
 select 
     product_id
-    , price AS price_USD
-    , CAST((price*0.40) AS NUMBER(38,2)) AS provider_price_USD
+    , price_USD
+    , provider_price_USD
     , name
     , inventory
 
