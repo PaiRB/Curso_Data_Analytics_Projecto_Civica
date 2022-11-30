@@ -9,5 +9,6 @@ select
     , provider_price_USD
     , name
     , inventory
+    , fivetran_synced
 
 from stg_sql_products

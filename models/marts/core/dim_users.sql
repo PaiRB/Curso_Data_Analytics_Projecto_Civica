@@ -30,6 +30,7 @@ users as (
         , phone_number
         , email
         , address_id
+        , fivetran_synced
 
     from ref_users
 ),
@@ -55,6 +56,7 @@ SELECT u.user_id
     , u.created_date
     , u.updated_at
     , u.updated_date
+    , u.fivetran_synced
 
 FROM users u 
     LEFT JOIN calculo_orders co

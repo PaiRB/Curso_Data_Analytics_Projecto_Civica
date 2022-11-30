@@ -13,12 +13,13 @@ WITH fact_orders AS (
         , promo_id
         , shipping_id
         , status
-        , order_cost
+        , order_cost_USD
         , created_at
         , created_date
         , delivered_at
         , delivered_date
         , estimated_delivery_at
+        , fivetran_synced
     FROM {{ ref('intermediate_orders') }}
     )
 

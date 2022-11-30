@@ -21,9 +21,7 @@ renamed_casted AS (
       -- ids
       md5(_row) AS budget_id
       ,  TRIM(_row) AS natural_budget_id
-      
-      -- strings
-      , TRIM(product_id) AS product_id
+      , md5(TRIM(product_id)) AS product_id
 
       -- numerics 
       , quantity
