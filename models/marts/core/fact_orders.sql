@@ -1,13 +1,15 @@
 {{
   config(
     materialized='incremental',
-    unique_key = 'order_id'
+    unique_key = 'fact_order_id'
   )
 }}
 
 WITH fact_orders AS (
-    SELECT  
-        order_id
+    SELECT
+        md5(CONCAT(order_id,product_id)) AS fact_order_id  
+        , order_id
+        , natural_order_id
         , product_id
         , user_id
         , address_id
@@ -25,7 +27,7 @@ WITH fact_orders AS (
     )
 
 SELECT * FROM fact_orders
-ORDER BY order_id
+ORDER BY natural_order_id
 
 {% if is_incremental() %}
 

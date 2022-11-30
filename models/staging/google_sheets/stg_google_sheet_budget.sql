@@ -24,11 +24,12 @@ renamed_casted AS (
       , month AS date
       , monthname(month) AS month_desc
       , year(month) AS year_desc
+      , (year(month)*100+month(b.month)) AS id_anio_mes
       
       -- timestamps
       , _fivetran_synced ::timestamp_ltz AS fivetran_synced
         
-    FROM stg_budget
+    FROM stg_budget b
     )
 
 SELECT * FROM renamed_casted
