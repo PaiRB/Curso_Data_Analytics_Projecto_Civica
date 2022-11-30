@@ -37,7 +37,6 @@ users as (
 ),
 
 calculo_orders as (
-    
     select
         user_id
         , num_orders
