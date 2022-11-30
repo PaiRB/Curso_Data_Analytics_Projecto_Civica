@@ -1,6 +1,6 @@
 {{
   config(
-    materialized='incremental',
+    materialized='view',
     unique_key = 'budget_id'
   )
 }}
@@ -25,18 +25,21 @@ renamed_casted AS (
         , p.price_USD
         , ROUND((quantity*price_USD),2) AS stimated_sales_USD
         , b.date
+        , (year(b.date)*100+month(b.date)) AS id_anio_mes
         , b.fivetran_synced
         
     FROM stg_budget b 
-        RIGHT JOIN stg_products p
+        JOIN stg_products p
         ON b.product_id = p.product_id
     )
 
 SELECT * FROM renamed_casted
 
+/*
 {% if is_incremental() %}
 
   -- this filter will only be applied on an incremental run
   where fivetran_synced > (select max(fivetran_synced) from {{ this }})
 
 {% endif %}
+*/
