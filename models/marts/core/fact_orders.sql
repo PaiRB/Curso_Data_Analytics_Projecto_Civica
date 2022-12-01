@@ -1,6 +1,6 @@
 {{
   config(
-    materialized='incremental',
+    materialized='table',
     unique_key = 'fact_order_id'
   )
 }}
@@ -34,10 +34,12 @@ SELECT
 
     -- strings
     , status
+    , shipping_service
 
     -- numerics
     , order_cost_USD
-
+    , shipping_cost_USD
+    
     -- timestamps
     , created_at
     , created_date
@@ -49,9 +51,11 @@ SELECT
 FROM fact_orders
 ORDER BY natural_order_id
 
+/*
 {% if is_incremental() %}
 
   -- this filter will only be applied on an incremental run
   where fivetran_synced > (select max(fivetran_synced) from {{ this }})
 
 {% endif %}
+*/

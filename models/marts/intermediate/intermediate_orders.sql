@@ -44,6 +44,7 @@ SELECT
 
     -- strings
     , o.status
+    , o.shipping_service
 
     -- numerics
     , coalesce(pro.discount_USD, 0) AS discount_USD
@@ -52,7 +53,6 @@ SELECT
     , (p.price_USD*oit.quantity) AS order_cost_USD
     , CONCAT(o.order_id,'-',md5(o.shipping_cost_USD)) AS shipping_id
     , o.shipping_cost_USD
-    , o.shipping_service
 
     -- timestamps
     , o.created_at 

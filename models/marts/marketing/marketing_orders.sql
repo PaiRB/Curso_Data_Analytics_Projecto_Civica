@@ -18,6 +18,10 @@ WITH prueba_orders AS (
         , user_id
         , promo_id
         , shipping_id
+        ----
+        , shipping_cost_USD
+        , shipping_service
+        ----
 
     FROM {{ ref('fact_orders') }}
       
@@ -26,8 +30,10 @@ WITH prueba_orders AS (
       , promo_id
       , shipping_id
       , user_id
+      , shipping_cost_USD
+      , shipping_service
     ),
-
+/*
 prueba_shipping AS (
     SELECT 
         shipping_id
@@ -35,7 +41,7 @@ prueba_shipping AS (
         , shipping_service
     FROM {{ref('dim_shipping') }}
     ),
-
+*/
 prueba_users AS (
     SELECT 
         user_id
@@ -68,15 +74,15 @@ SELECT
 
     -- numerics
     , order_cost_USD
-    , s.shipping_cost_USD
+    , o.shipping_cost_USD
     , coalesce(p.discount_USD,0) AS discount_USD
-    , ROUND(((order_cost_USD+shipping_cost_USD)-coalesce(p.discount_USD,0)),2) AS total_order_USD
+    , ROUND(((order_cost_USD+o.shipping_cost_USD)-coalesce(p.discount_USD,0)),2) AS total_order_USD
 
 FROM prueba_orders o 
   FULL JOIN prueba_promos p
   ON o.promo_id = p.promo_id
-  FULL JOIN prueba_shipping s
-  ON o.shipping_id = s.shipping_id
+  --FULL JOIN prueba_shipping s
+  --ON o.shipping_id = s.shipping_id
   LEFT JOIN prueba_users u
   ON o.user_id = u.user_id 
   
