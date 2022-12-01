@@ -19,6 +19,7 @@ renamed as (
         , TRIM(session_id) AS session_id
         , md5(TRIM(product_id)) AS product_id
         , md5(TRIM(order_id)) AS order_id
+        , year(created_at)*10000+month(created_at)*100+day(created_at) as id_date_created
 
         -- strings
         , TRIM(event_type) as event_type

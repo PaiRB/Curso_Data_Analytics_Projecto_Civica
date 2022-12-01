@@ -10,34 +10,23 @@ WITH src_sql_users AS (
     FROM {{ ref('base_sql_server_dbo_users') }}
     ),
 
-/*--------------------------------------------------
-----RETIRADO HASTA SOLUCIONAR LA INGESTA------------
-----------------------------------------------------
-age_gender AS (
-    SELECT
-        user_id 
-        , CAST(age AS NUMBER(38,0)) AS age  
-        , gender
-    FROM {{ref('age_gender_of_users')}}
-),
-*/
 renamed as (
 
     select
         -- ids
         md5(u.user_id) AS user_id
         , TRIM(u.user_id) AS natural_user_id
+        , year(created_at)*10000+month(created_at)*100+day(created_at) as id_date_created
+        , year(updated_at)*10000+month(updated_at)*100+day(updated_at) as id_date_updated
 
         -- strings
         , TRIM(first_name) AS first_name 
         , TRIM(last_name) AS last_name
-        --, gender //RETIRADO HASTA SOLUCIONAR LA INGESTA
         , TRIM(phone_number) AS phone_number
         , TRIM(email) AS email
         , TRIM(address_id) AS address_id
 
         -- numerics
-        --, age //RETIRADO HASTA SOLUCIONAR LA INGESTA
         , total_orders
 
         -- timestamps
@@ -48,8 +37,7 @@ renamed as (
         , _fivetran_synced ::timestamp_ltz AS fivetran_synced
 
     from src_sql_users u 
-        --join age_gender s
-        --on u.user_id = s.user_id
+
 )
 
 select * from renamed

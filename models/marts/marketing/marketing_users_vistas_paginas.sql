@@ -4,17 +4,17 @@
   )
 }}
 
-{% set event_types = obtener_valores(ref('base_sql_server_dbo_events'),'event_type') %}
+{% set event_types = obtener_valores(ref('stg_sql_server_dbo_events'),'event_type') %}
 WITH stg_events AS (
     SELECT 
      * 
-    FROM {{ ref('base_sql_server_dbo_events') }}
+    FROM {{ ref('stg_sql_server_dbo_events') }}
     ),
 
 datos_user AS (
     SELECT 
       *
-    FROM {{ ref('base_sql_server_dbo_users') }}
+    FROM {{ ref('stg_sql_server_dbo_users') }}
     ),
 
 renamed_casted AS (

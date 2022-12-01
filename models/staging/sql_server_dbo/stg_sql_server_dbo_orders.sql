@@ -17,11 +17,14 @@ renamed_casted AS (
         , TRIM(order_id) AS natural_order_id
         , md5(TRIM(user_id)) AS user_id
         , md5(TRIM(address_id)) AS address_id
+        , year(created_at)*10000+month(created_at)*100+day(created_at) as id_date_created
+        , year(delivered_at)*10000+month(delivered_at)*100+day(delivered_at) as id_date_delivered
         , CASE 
             WHEN promo_id = '' THEN ''
             ELSE md5 (promo_id)
             END AS promo_id
         
+
         -- strings
         , TRIM(status) AS status
         , TRIM(shipping_service) AS shipping_service

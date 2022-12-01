@@ -54,6 +54,9 @@ models:
 
       - name: product_id
         description: "Foreign Key del id de products"
+      
+      - name: id_date_created
+        description: "id que describe el año, mes y día al que pertence la fecha de creación del evento"
 
       - name: created_at
         description: "Atributo - Fecha y hora en la que se ha generado el evento"
@@ -122,6 +125,12 @@ models:
 
       - name: address_id
         description: "Foreign Key del id de addresses"
+
+      - name: id_date_created
+        description: "id que describe el año, mes y día al que pertence la fecha de creación del pedido"
+
+      - name: id_date_delivered
+        description: "id que describe el año, mes y día al que pertence la fecha de entrega del pedido"
 
       - name: promo_id
         description: "Foreign Key del id de promos"
@@ -228,7 +237,13 @@ models:
 
       - name: natural_user_id
         description: "Primary Key natural de la tabla users"
-          
+
+      - name: id_date_created
+        description: "id que describe el año, mes y día al que pertence la fecha de creación del usuario"
+
+      - name: id_date_updated
+        description: "id que describe el año, mes y día al que pertence la fecha de la última actualización del usuario"          
+
       - name: first_name
         description: "Atributo - Desc. del nombre del usuario"
 
