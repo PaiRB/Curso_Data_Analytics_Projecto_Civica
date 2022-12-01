@@ -23,7 +23,7 @@ renamed as  (
         , CAST(discount AS int) AS discount_USD
 
         -- timestamps
-        , _fivetran_synced::timestamp_ltz AS fivetran_synced
+        , _fivetran_synced ::timestamp_ltz AS fivetran_synced
     from src_sql_promos
 )
 

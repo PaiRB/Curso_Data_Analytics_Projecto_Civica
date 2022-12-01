@@ -37,6 +37,9 @@ SELECT o.order_id
     , o.user_id
     , o.address_id
     , o.promo_id
+    , id_date_created
+    , id_date_updated
+
     , coalesce(pro.discount_USD, 0) AS discount_USD
     , o.status
     , p.price_USD
@@ -45,10 +48,7 @@ SELECT o.order_id
     , CONCAT(o.order_id,'-',md5(o.shipping_cost_USD)) AS shipping_id
     , o.shipping_cost_USD
     , o.shipping_service
-    ---------------------------------------------------
-    --RESOLVER DUDA SOBRE ORDER TOTAL MANTENER O QUITAR
-    --, o.order_total
-    ---------------------------------------------------
+
     , created_at 
     , created_date
     , delivered_at

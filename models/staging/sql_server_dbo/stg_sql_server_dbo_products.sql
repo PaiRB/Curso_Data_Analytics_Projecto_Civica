@@ -25,7 +25,7 @@ renamed as (
         , inventory
 
         -- timestamps
-        , _fivetran_synced::timestamp_ltz AS fivetran_synced
+        , _fivetran_synced ::timestamp_ltz AS fivetran_synced
 
     from src_sql_products
 )

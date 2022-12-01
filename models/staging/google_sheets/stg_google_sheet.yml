@@ -28,5 +28,8 @@ models:
       - name: year_desc
         description: "Atributo - Desc. del año del atributo date"
 
+      - name: id_anio_mes
+        description: "id que describe el mes y el año al que pertence"
+
       - name: fivetran_synced
         description: "Atributo - Fecha de carga de la información"
