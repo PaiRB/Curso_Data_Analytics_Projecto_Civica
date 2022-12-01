@@ -1,5 +1,9 @@
 version: 2
 
+#########################################################
+##                  TABLA ADDRESSES                    ##
+#########################################################
+
 models:
   - name: stg_sql_server_dbo_addresses
     description: "Tabla que contiene los datos de direcciones de envío y de usuarios"
@@ -31,6 +35,8 @@ models:
       - name: fivetran_synced
         description: "Atributo - Fecha de carga de la información"
 
+#########################################################
+##                     TABLA EVENTS                    ##
 #########################################################
 
   - name: stg_sql_server_dbo_events
@@ -80,6 +86,8 @@ models:
         description: "Atributo - Fecha de carga de la información"          
 
 #########################################################
+##                 TABLA ORDERITEMS                    ##
+#########################################################
 
   - name: stg_sql_server_dbo_orderitems
     description: "Tabla que enlaza la tabla orders y la tabla products, contiene información sobre la cantidad de producto comprado en cada order"
@@ -106,6 +114,8 @@ models:
       - name: fivetran_synced
         description: "Atributo - Fecha de carga de la información"
 
+#########################################################
+##                     TABLA ORDERS                    ##
 #########################################################
 
   - name: stg_sql_server_dbo_orders
@@ -173,6 +183,8 @@ models:
         description: "Atributo - Fecha de carga de la información"
 
 #########################################################
+##                    TABLA PRODUCTS                   ##
+#########################################################
 
   - name: stg_sql_server_dbo_products
     description: "Tabla que contiene los datos sobre los productos, generada como hash a partir del campo natural_product_id"
@@ -202,6 +214,8 @@ models:
         description: "Atributo - Fecha de carga de la información"
 
 #########################################################
+##                    TABLA PROMOS                     ##
+#########################################################
 
   - name: stg_sql_server_dbo_promos
     description: "Tabla que contiene los datos sobre las promociones aplicadas a los productos"
@@ -217,6 +231,9 @@ models:
 
       - name: status
         description: "Atributo - Desc. del estado de la promoción - ACTIVE/INACTIVE"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['active','inactive']
 
       - name: discount
         description: "Atributo métrica - Número plano que se descuenta al coste del pedido"
@@ -224,6 +241,8 @@ models:
       - name: fivetran_synced
         description: "Atributo - Fecha de carga de la información"
 
+#########################################################
+##                     TABLA USERS                     ##
 #########################################################      
 
   - name: stg_sql_server_dbo_users
@@ -255,7 +274,7 @@ models:
 
       - name: created_at
         description: "Atributo - Desc. de la fecha y hora en la que se ha generado el registro de usuario"
-
+  
       - name: updated_at
         description: "Atributo - Desc. de la fecha y hora en la que se ha actualizado el registro de usuario"
 
@@ -264,8 +283,9 @@ models:
 
       - name: email
         description: "Atributo - Desc. del email del usuario"
-        test:
-          - unique
+        tests:
+          - dbt_expectations.expect_column_values_to_match_like_pattern:
+              like_pattern: "%@%"
 
       - name: address_id
         description: "Foreign Key del id de addresses"

@@ -31,17 +31,22 @@ fact_order_promos AS (
 ----------------------------------------------------------------------------
 
 --ESTA CONSULTA FUNCIONA Y DA EL RESULTADO CORRECTO, NO BORRAR
-SELECT o.order_id
+SELECT 
+    -- ids
+    o.order_id
     , o.natural_order_id
     , oit.product_id
     , o.user_id
     , o.address_id
     , o.promo_id
-    , id_date_created
-    , id_date_updated
+    , o.id_date_created
+    , o.id_date_delivered
 
-    , coalesce(pro.discount_USD, 0) AS discount_USD
+    -- strings
     , o.status
+
+    -- numerics
+    , coalesce(pro.discount_USD, 0) AS discount_USD
     , p.price_USD
     , oit.quantity
     , (p.price_USD*oit.quantity) AS order_cost_USD
@@ -49,11 +54,12 @@ SELECT o.order_id
     , o.shipping_cost_USD
     , o.shipping_service
 
-    , created_at 
-    , created_date
-    , delivered_at
-    , delivered_date
-    , estimated_delivery_at
+    -- timestamps
+    , o.created_at 
+    , o.created_date
+    , o.delivered_at
+    , o.delivered_date
+    , o.estimated_delivery_at
     , o.fivetran_synced
 
 FROM fact_order_orders o 

@@ -46,7 +46,6 @@ renamed_casted AS (
         , ((con.sales_USD-con.discount_USD)-con.provider_cost_USD) AS profit
 
         -- timestamps
-
         , cal.fivetran_synced
 
     FROM calculo_beneficios_esperados cal
@@ -57,3 +56,13 @@ renamed_casted AS (
     )
 
 SELECT * FROM renamed_casted
+
+
+/*
+{% if is_incremental() %}
+
+  -- this filter will only be applied on an incremental run
+  where fivetran_synced > (select max(fivetran_synced) from {{ this }})
+
+{% endif %}
+*/

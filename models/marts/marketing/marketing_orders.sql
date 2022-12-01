@@ -1,12 +1,15 @@
 --ESTA CONSULTA ES PARA COMPROBAR SI SE PUEDE OBTENER EL ORDER_TOTAL ORIGINAL A PARTIR
---DE LOS VALORES CALCULADOS EN LAS NUEVAS MÉTRICAS -> SPOILER: SI SE PUEDE
---QUEDA POR SOLVENTAR QUE ES MEJOR
+--DE LOS VALORES CALCULADOS EN LAS NUEVAS MÉTRICAS -> SI SE PUEDE
 
 {{
   config(
     materialized='view'
   )
 }}
+
+---------------------------------------------------------------------
+--------------------------REFERENCES TO STG--------------------------
+---------------------------------------------------------------------
 
 WITH prueba_orders AS (
     SELECT
@@ -50,13 +53,16 @@ prueba_promos AS (
     FROM {{ref('dim_promos') }}
     )
 
+---------------------------------------------------------------------
+-------------------------------SELECTS-------------------------------
+---------------------------------------------------------------------
 
 SELECT
     -- ids
     natural_order_id
 
     -- strings
-    , CONCAT(first_name,' ',last_name) AS Client_Name
+    , CONCAT(first_name,' ',last_name) AS Client_Full_Name
     , phone_number
     , email
 
