@@ -27,7 +27,7 @@ renamed as (
 
         -- timestamps
         , created_at::timestamp_ltz AS created_at
-        , created_at ::DATE AS Created_at_date
+        , created_at ::DATE AS created_at_date
         , _fivetran_synced ::timestamp_ltz AS fivetran_synced
 
     from src_sql_events

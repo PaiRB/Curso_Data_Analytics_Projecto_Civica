@@ -9,27 +9,62 @@ models:
         tests:
           - unique
           - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+                column_type: varchar
 
       - name: natural_budget_id
         description: "Primary Key natural de la tabla budget"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
 
       - name: product_id
         description: "Foreign Key del id de products"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+          - relationships:
+              to: ref('stg_sql_server_dbo_products')
+              field: product_id
 
       - name: quantity
         description: "Atributo métrica - Cantidad vendida esperada de cada producto"      
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: int
+          - not_null
 
       - name: date
         description: "Atributo - Desc. de la fecha de cierre del mes"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: date
+          - not_null
 
       - name: month_desc
         description: "Atributo - Desc. del nombre del mes del atributo date"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+          - not_null
 
       - name: year_desc
         description: "Atributo - Desc. del año del atributo date"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: int
+          - not_null
 
       - name: id_anio_mes
         description: "id que describe el mes y el año al que pertence"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+          - not_null
 
       - name: fivetran_synced
         description: "Atributo - Fecha de carga de la información"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: date
+          - not_null        

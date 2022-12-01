@@ -13,27 +13,52 @@ models:
         tests:
           - unique
           - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
 
       - name: natural_address_id
         description: "Primary Key natural de la tabla addresses"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
 
       - name: zipcode
         description: "Atributo - Desc. del código postal de la dirección"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
 
       - name: address
         description: "Atributo - Desc. de la dirección"      
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
 
       - name: city
         description: "Atributo - Desc. del nombre ciudad añadido a la tabla a partir de una seed"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+          - not_null
 
       - name: country
         description: "Atributo - Desc. del nombre pais a donde pertenece la dirección"
-
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+              
       - name: state
         description: "Atributo - Desc. del nombre estado al que pertenece la dirección"
-      
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+
       - name: fivetran_synced
         description: "Atributo - Fecha de carga de la información"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: date
+          - not_null
 
 #########################################################
 ##                     TABLA EVENTS                    ##
@@ -48,42 +73,88 @@ models:
         tests:
           - unique
           - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
 
       - name: natural_event_id
         description: "Primary Key natural de la tabla events"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
           
       - name: user_id
         description: "Foreign Key del id de users"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+          - relationships:
+              to: ref('stg_sql_server_dbo_users')
+              field: user_id
 
       - name: session_id
         description: "Atributo - código identificador de la sesión web"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
 
       - name: product_id
         description: "Foreign Key del id de products"
-      
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+          - relationships:
+              to: ref('stg_sql_server_dbo_products')
+              field: product_id
+
       - name: id_date_created
         description: "id que describe el año, mes y día al que pertence la fecha de creación del evento"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
 
       - name: created_at
         description: "Atributo - Fecha y hora en la que se ha generado el evento"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: date
 
       - name: created_at_date
         description: "Atributo - Desc. de la fecha en la que se ha generado el evento "
-
-      - name: created_at_time
-        description: "Atributo - Desc. de la hora en la que se ha generado el evento"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: date
 
       - name: event_type
         description: "Atributo - Desc. del tipo de evento"
-
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['add_to_cart','page_view','checkout','package_shipped']
+            
       - name: order_id
         description: "Foreign Key del id de orders, este campo va a retirarse"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+          - relationships:
+              to: ref('stg_sql_server_dbo_orders')
+              field: order_id
 
       - name: url
         description: "Atributo - Desc. de las URL que han visitado los clientes"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+          - dbt_expectations.expect_column_values_to_match_like_pattern:
+              like_pattern: "%.%"
 
       - name: fivetran_synced
-        description: "Atributo - Fecha de carga de la información"          
+        description: "Atributo - Fecha de carga de la información"    
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: date
+          - not_null
 
 #########################################################
 ##                 TABLA ORDERITEMS                    ##
@@ -97,22 +168,35 @@ models:
         tests:
           - unique
           - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
 
       - name: order_id
         description: "Primera parte de la Primary Key compuesta de la tabla order-items"
         tests:
           - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
           
       - name: product_id
         description: "Segunda parte de la Primary Key de la tabla order-items"
         tests:
           - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
           
       - name: quantity
         description: "Atributo métrica - Cantidad de productos comprados en cada order"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: int
 
       - name: fivetran_synced
         description: "Atributo - Fecha de carga de la información"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: date
+          - not_null
 
 #########################################################
 ##                     TABLA ORDERS                    ##
@@ -126,61 +210,125 @@ models:
         tests:
           - unique
           - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
 
       - name: natural_order_id
         description: "Primary Key natural de la tabla orders"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
           
       - name: user_id
         description: "Foreign Key del id de users"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+          - relationships:
+              to: ref('stg_sql_server_dbo_users')
+              field: users_id
 
       - name: address_id
         description: "Foreign Key del id de addresses"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+          - relationships:
+              to: ref('stg_sql_server_dbo_addresses')
+              field: address_id
 
       - name: id_date_created
         description: "id que describe el año, mes y día al que pertence la fecha de creación del pedido"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
 
       - name: id_date_delivered
         description: "id que describe el año, mes y día al que pertence la fecha de entrega del pedido"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
 
       - name: promo_id
         description: "Foreign Key del id de promos"
         test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
           - relationships:
               to: ref('stg_sql_server_dbo_promos')
               field: promo_id
 
       - name: status
         description: "Atributo -  Desc. del estado del order"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['delivered','preparing','shipped']
 
       - name: order_total_USD
         description: "Atributo métrica - Coste total del pedido en USD"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: float
 
       - name: order_cost_USD
         description: "Atributo métrica - Coste del pedido en USD sin tener en cuenta shipping_cost ni promociones"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: float
 
       - name: shipping_cost_USD
         description: "Atributo métrica - Coste del envío del pedio"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: float
 
       - name: shipping_service
         description: "Atributo - Desc. del nombre de la compañía del envío"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['ups','usps','fedex','dhl']
 
       - name: created_at
         description: "Atributo -  Desc. de la fecha y hora en la que se ha generado la orden de pedido"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: date
 
       - name: created_date
         description: "Atributo -  Desc. de la fecha en la que se ha generado la orden de pedido"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: date
 
       - name: delivered_at
         description: "Atributo -  Desc. de la fecha y hora en la que se ha recogido/entregado el producto"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: date
 
       - name: delivered_date
         description: "Atributo - Desc. de la fecha en la que se ha recogido/entregado el producto"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: date
 
       - name: estimated_delivery_at
         description: "Atributo - Fecha y hora estimada para la recogida/entrega del producto"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: date
 
       - name: fivetran_synced
         description: "Atributo - Fecha de carga de la información"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: date
+          - not_null
+
 
 #########################################################
 ##                    TABLA PRODUCTS                   ##
@@ -194,24 +342,45 @@ models:
         tests:
           - unique
           - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
 
       - name: natural_product_id
         description: "Primary Key natural de la tabla products"
-          
+        test:  
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+
       - name: price_USD
         description: "Atributo métrica - Precio del producto"
-      
+        test:  
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: float
+
       - name: provider_price_USD
         description: "Atributo métrica - Precio supuesto como precio del proveedor"
+        test:  
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: float
 
       - name: name
         description: "Atributo - Desc. del nombre del producto"
+        test:  
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
 
       - name: inventory
         description: "Atributo métrica - Cantidad de producto en el almacén"
+        test:  
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: int
 
       - name: fivetran_synced
         description: "Atributo - Fecha de carga de la información"
+        test:  
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: date
+          - not_null
 
 #########################################################
 ##                    TABLA PROMOS                     ##
@@ -224,22 +393,36 @@ models:
         description: "Primary Key de la tabla promo, generada como hash a partir del campo desc_promo"
         tests:
           - unique
-          - not_null
-          
+          - not_null 
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+
       - name: desc_promo
         description: "Atributo - Desc. del nombre de la promoción aplicada"
+        test:  
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
 
       - name: status
         description: "Atributo - Desc. del estado de la promoción - ACTIVE/INACTIVE"
         tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
           - dbt_expectations.expect_column_values_to_be_in_set:
               value_set: ['active','inactive']
 
       - name: discount
         description: "Atributo métrica - Número plano que se descuenta al coste del pedido"
+        test:  
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: int
 
       - name: fivetran_synced
         description: "Atributo - Fecha de carga de la información"
+        test:  
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: date
+          - not_null
 
 #########################################################
 ##                     TABLA USERS                     ##
@@ -253,42 +436,154 @@ models:
         tests:
           - unique
           - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
 
       - name: natural_user_id
         description: "Primary Key natural de la tabla users"
+        test:  
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
 
       - name: id_date_created
         description: "id que describe el año, mes y día al que pertence la fecha de creación del usuario"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
 
       - name: id_date_updated
         description: "id que describe el año, mes y día al que pertence la fecha de la última actualización del usuario"          
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
 
       - name: first_name
         description: "Atributo - Desc. del nombre del usuario"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
 
       - name: last_name
         description: "Atributo - Desc. del apellido del usuario"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
 
       - name: total_orders
         description: "Atributo métrica - Número total de ordenes que ha realizado el usuario"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: int
 
       - name: created_at
         description: "Atributo - Desc. de la fecha y hora en la que se ha generado el registro de usuario"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: date
   
       - name: updated_at
         description: "Atributo - Desc. de la fecha y hora en la que se ha actualizado el registro de usuario"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: date
 
       - name: phone_number
         description: "Atributo - Desc. del número de teléfono del usuario"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
 
       - name: email
         description: "Atributo - Desc. del email del usuario"
-        tests:
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
           - dbt_expectations.expect_column_values_to_match_like_pattern:
               like_pattern: "%@%"
 
       - name: address_id
         description: "Foreign Key del id de addresses"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+          - relationships:
+              to: ref('stg_sql_server_dbo_addresses')
+              field: address_id
 
       - name: fivetran_synced
         description: "Atributo - Fecha de carga de la información"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+          - not_null      
+
+
+#########################################################
+##                     TABLA DATES                     ##
+#########################################################
+
+  - name: stg_dates
+    description: "Tabla que contiene los datos sobre los fechas desde 2020 hasta 2022"
+    columns:
+      - name: fecha_forecast
+        description: "Atributo - Desc"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: date
+          - not_null    
+
+      - name: id_date
+        description: "Primary Key de la tabla que describe el año, mes y día de la fecha"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+          - not_null    
+          
+      - name: anio
+        description: "Atributo - Desc. del año"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+          - not_null    
+
+      - name: mes
+        description: "Atributo - Desc. numérica del mes"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: int
+          - not_null    
+
+      - name: desc_mes
+        description: "Atributo - Desc. del nombre del mes"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+          - not_null    
+
+      - name: id_anio_mes
+        description: "id que describe el mes y el año al que pertence la fecha"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+          - not_null    
+
+      - name: dia_previo
+        description: "Atributo - Cálculo del día previo"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: date
+          - not_null    
+
+      - name: anio_semana_dia
+        description: "Atributo - Desc. del año, semana del año y el día de una fecha"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+          - not_null    
+
+      - name: semana
+        description: "Atributo - Desc. del número de la semana"
+        test:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: int
+          - not_null    
