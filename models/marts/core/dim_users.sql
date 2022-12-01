@@ -1,6 +1,6 @@
 {{
   config(
-    materialized='incremental',
+    materialized='table',
     unique_key = 'user_id'
   )
 }}
@@ -20,19 +20,24 @@ ref_calculo_orders AS (
 users as (
 
     select
+        -- ids
         user_id
+        , address_id
+
+        -- strings
         , first_name
         , last_name
-        --, age // RETIRADO HASTA SOLUCIONAR INCREMENTAL
-        --, gender // RETIRADO HASTA SOLUCIONAR INCREMENTAL
+        , phone_number
+        , email
+
+        -- numerics
         , total_orders
+
+        -- timestamps
         , created_at
         , created_date
         , updated_at
         , updated_date
-        , phone_number
-        , email
-        , address_id
         , fivetran_synced
 
     from ref_users
@@ -45,15 +50,26 @@ calculo_orders as (
     from ref_calculo_orders
 )
 
-SELECT u.user_id
+SELECT 
+    -- ids
+    u.user_id
+    , u.address_id
+
+    -- strings
     , u.first_name
     , u.last_name
-    --, gender // RETIRADO HASTA SOLUCIONAR INCREMENTAL
-    --, age // RETIRADO HASTA SOLUCIONAR INCREMENTAL
-    , coalesce(co.num_orders, 0) AS total_orders
     , u.phone_number
     , u.email
-    , u.address_id
+    , CASE
+        WHEN UNICODE(u.user_id)<75 THEN 'F'
+        ELSE 'M'
+        END AS gender
+
+    -- numerics
+    , (UNICODE(trim(first_name))-ROUND((UNICODE(trim(last_name))/2),0)) AS age
+    , coalesce(co.num_orders, 0) AS total_orders
+
+    -- timestamps
     , u.created_at
     , u.created_date
     , u.updated_at

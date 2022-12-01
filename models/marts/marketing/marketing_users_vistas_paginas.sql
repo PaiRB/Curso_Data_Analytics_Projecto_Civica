@@ -6,7 +6,8 @@
 
 {% set event_types = obtener_valores(ref('base_sql_server_dbo_events'),'event_type') %}
 WITH stg_events AS (
-    SELECT * 
+    SELECT 
+     * 
     FROM {{ ref('base_sql_server_dbo_events') }}
     ),
 
