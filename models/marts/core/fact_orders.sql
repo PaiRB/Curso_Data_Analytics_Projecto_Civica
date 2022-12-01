@@ -30,7 +30,7 @@ SELECT
     , promo_id
     , shipping_id
     , id_date_created
-    , id_date_updated
+    , id_date_delivered
 
     -- strings
     , status
