@@ -1,6 +1,6 @@
 {{
   config(
-    materialized='ephemeral',
+    materialized='table',
     unique_key = 'budget_id'
   )
 }}
