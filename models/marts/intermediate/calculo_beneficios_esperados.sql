@@ -1,6 +1,6 @@
 {{
   config(
-    materialized='view',
+    materialized='ephemeral',
     unique_key = 'budget_id'
   )
 }}

@@ -12,6 +12,7 @@ WITH prueba_orders AS (
     SELECT
         natural_order_id
         , SUM(order_cost_USD) AS order_cost_USD
+        , user_id
         , promo_id
         , shipping_id
 
@@ -21,6 +22,7 @@ WITH prueba_orders AS (
       natural_order_id 
       , promo_id
       , shipping_id
+      , user_id
     ),
 
 prueba_shipping AS (
@@ -31,6 +33,15 @@ prueba_shipping AS (
     FROM {{ref('dim_shipping') }}
     ),
 
+prueba_users AS (
+    SELECT 
+        user_id
+        , first_name
+        , last_name
+        , phone_number
+        , email
+    FROM {{ref('dim_users') }}
+    ),
 
 prueba_promos AS (
     SELECT 
@@ -39,9 +50,17 @@ prueba_promos AS (
     FROM {{ref('dim_promos') }}
     )
 
---ESTA CONSULTA FUNCIONA Y DA EL RESULTADO CORRECTO, NO BORRAR
+
 SELECT
+    -- ids
     natural_order_id
+
+    -- strings
+    , CONCAT(first_name,' ',last_name) AS Client_Name
+    , phone_number
+    , email
+
+    -- numerics
     , order_cost_USD
     , s.shipping_cost_USD
     , coalesce(p.discount_USD,0) AS discount_USD
@@ -52,12 +71,10 @@ FROM prueba_orders o
   ON o.promo_id = p.promo_id
   FULL JOIN prueba_shipping s
   ON o.shipping_id = s.shipping_id
-
-GROUP BY
-  natural_order_id
-  , order_cost_USD
-  , s.shipping_cost_USD
-  , p.discount_USD
+  LEFT JOIN prueba_users u
+  ON o.user_id = u.user_id 
+  
+{{ dbt_utils.group_by(8)}}
 
 
 /*
