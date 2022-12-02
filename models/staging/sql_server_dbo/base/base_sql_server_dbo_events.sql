@@ -29,3 +29,4 @@ renamed as (
 )
 
 select * from renamed
+WHERE _fivetran_deleted = FALSE

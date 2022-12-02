@@ -28,5 +28,5 @@ renamed_casted AS (
     FROM src_sql_addresses 
     )
 
-SELECT * FROM renamed_casted 
+SELECT * FROM renamed_casted
 ORDER BY zipcode

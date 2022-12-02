@@ -206,7 +206,7 @@ models:
     description: "Futura tabla de hechos Orders, contiene toda la información sobre los pedidos realizados"
     columns:
       - name: order_id
-        description: "Primary Key de la tabla events, generada como hash a partir del campo natural_order_id"
+        description: "Primary Key de la tabla orders, generada como hash a partir del campo natural_order_id"
         tests:
           - unique
           - not_null

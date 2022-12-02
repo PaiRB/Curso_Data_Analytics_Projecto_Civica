@@ -19,8 +19,11 @@ WITH prueba_orders AS (
         , promo_id
         , shipping_id
         ----
+        , status
+        ----
         , shipping_cost_USD
         , shipping_service
+        , delivery_days
         ----
 
     FROM {{ ref('fact_orders') }}
@@ -32,7 +35,10 @@ WITH prueba_orders AS (
       , user_id
       , shipping_cost_USD
       , shipping_service
+      , delivery_days
+      , status
     ),
+
 /*
 prueba_shipping AS (
     SELECT 
@@ -42,6 +48,7 @@ prueba_shipping AS (
     FROM {{ref('dim_shipping') }}
     ),
 */
+
 prueba_users AS (
     SELECT 
         user_id
@@ -77,6 +84,8 @@ SELECT
     , o.shipping_cost_USD
     , coalesce(p.discount_USD,0) AS discount_USD
     , ROUND(((order_cost_USD+o.shipping_cost_USD)-coalesce(p.discount_USD,0)),2) AS total_order_USD
+    , status
+    , delivery_days
 
 FROM prueba_orders o 
   FULL JOIN prueba_promos p
@@ -86,7 +95,8 @@ FROM prueba_orders o
   LEFT JOIN prueba_users u
   ON o.user_id = u.user_id 
   
-{{ dbt_utils.group_by(8)}}
+{{ dbt_utils.group_by(10)}}
+ORDER BY Client_Full_Name ASC
 
 
 /*

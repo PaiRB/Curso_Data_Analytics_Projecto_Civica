@@ -1,12 +1,13 @@
 version: 2
 
+models:
+
 #########################################################
 ##                TABLA DIM_ADDRESSES                  ##
 #########################################################
 
-models:
   - name: dim_addresses
-    description: "Tabla de dimensiones que contiene los datos de direcciones de envío y direcciones de los usuarios"
+    description: "Tabla de dimensión que contiene los datos de direcciones de envío y direcciones de los usuarios"
     columns:
       - name: address_id
         description: "Primary Key de la tabla addresses, generada como hash a partir del campo natural_address_id"
@@ -93,7 +94,7 @@ models:
 #########################################################
 
   - name: dim_products
-    description: "Tabla de dimensiones que contiene los datos sobre los productos"
+    description: "Tabla de dimensión que contiene los datos sobre los productos"
     columns:
       - name: product_id
         description: "Primary Key de la tabla products, generada como hash a partir del campo natural_product_id"
@@ -122,7 +123,7 @@ models:
 #########################################################
 
   - name: dim_promos
-    description: "Tabla de dimensiones que contiene los datos sobre las promociones aplicadas a los productos"
+    description: "Tabla de dimensión que contiene los datos sobre las promociones aplicadas a los productos"
     columns:
       - name: promo_id
         description: "Primary Key de la tabla promo, generada como hash a partir del campo desc_promo"
@@ -176,144 +177,162 @@ models:
         description: "Atributo - Desc. del email del usuario"
 
       - name: gender
-        description: ""
+        description: "Atributo métrica - Desc. del sexo del usuario. Generado mediante un UNICODE de user_id"
 
       - name: age
-        description: ""
+        description: "Atributo métrica - Desc. de la edad del usuario. Generado a partir de la diferencia entre el UNICODE de first_name y el de last_name/2"
 
       - name: total_orders
         description: "Atributo métrica - Número total de ordenes que ha realizado el usuario"
 
       - name: created_at
-        description: ""
+        description: "Atributo - Desc. de la fecha y hora en la que se ha generado el registro de usuario"
 
       - name: created_date
-        description: ""
+        description: "Atributo - Desc. de la fecha en la que se ha actualizado el registro de usuario. Generado a partir de created_at"
 
       - name: updated_at
-        description: ""
+        description: "Atributo - Desc. de la fecha y hora en la que se ha actualizado el registro de usuario"
 
       - name: updated_date
-        description: ""
+        description: "Atributo - Desc. de la fecha en la que se ha actualizado el registro de usuario. Generado a partir de created_at"
 
       - name: fivetran_synced
-        description: ""
+        description: "Atributo - Fecha de carga de la información"
 
 #########################################################
 ##                 TABLA FACT_BUDGET                   ##
 #########################################################
 
   - name: fact_budget
-    description: ""
+    description: "Tabla de dimensión que contiene los datos de las ventas esperadas por producto, agrupadas por meses"
     columns:
       - name: id_anio_mes
-        description: ""
+        description: "id que describe el mes y el año al que pertence el registro de budget"
 
       - name: budget_id
-        description: ""
+        description: "Primary Key de la tabla budget, generada como hash a partir del campo natural_budget_id"
 
       - name: natural_budget_id
-        description: ""
+        description: "Primary Key natural de la tabla budget"
 
       - name: product_id
-        description: ""
+        description: "Foreign Key del id de products"
 
       - name: name
-        description: ""
+        description: "Atributo - Desc. del nombre del producto"
 
       - name: quantity
-        description: ""
+        description: "Atributo métrica - Cantidad vendida esperada de cada producto"
 
       - name: quantity_sold
-        description: ""
+        description: "Atributo métrica - Cantidad vendida en realidad. Obtenido de la tabla orderitems"
+        test:
 
       - name: price_usd
-        description: ""
+        description: "Atributo métrica - USD Precio de cada producto individual"
+        test:
 
       - name: stimated_sales_usd
-        description: ""
+        description: "Atributo métrica - USD Beneficio e se espera obtener. Generada al multiplicar el price por quantity"
+        test:
 
       - name: sales_usd
-        description: ""
+        description: "Atributo métrica - USD Ventas obtenidas por cada producto. Generada al multiplicar el price por quantity_sold"
+        test:
 
       - name: discount_usd
-        description: ""
+        description: "Atributo métrica - USD Descuento total por cada producto. Obtenido de la tabla orders. "
+        test:
 
       - name: real_sales_usd
-        description: ""
+        description: "Atributo métrica - USD Ventas obtenidas por cada producto. Generada al restar discount_USD a sales_USD "
+        test:
 
       - name: provider_cost_usd
-        description: ""
+        description: "Atributo métrica - USD Coste de obtener cada producto del proveedor. Obtenido de la tabla products"
+        test:
 
       - name: profit
-        description: ""
+        description: "Atributo métrica - USD Beneficio resultante de la diferencia entre real_sales_USD y provider_cost_USD"
+        test:
 
       - name: fivetran_synced
-        description: ""
+        description: "Atributo - Fecha de carga de la información"
 
 #########################################################
 ##                  TABLA FACT_ORDERS                  ##
 #########################################################
 
   - name: fact_orders
-    description: ""
+    description: "Tabla de hechos Orders, contiene toda la información sobre los pedidos realizados"
     columns:
       - name: fact_order_id
-        description: ""
+        description: "Primary Key de la tabla orders, generada como hash a partir de la concatenación de order_id y natural_order_id"
+        test:
+          -unique
+          -not_null
 
       - name: order_id
-        description: ""
+        description: "id de la tabla stg_events, generada como hash a partir del campo natural_order_id"
 
       - name: natural_order_id
-        description: ""
+        description: "Primary Key natural de la tabla orders"
 
       - name: product_id
-        description: ""
+        description: "Foreign Key del id de products"
+        test:
 
       - name: user_id
-        description: ""
+        description: "Foreign Key del id de users"
 
       - name: address_id
-        description: ""
+        description: "Foreign Key del id de address"
 
       - name: promo_id
-        description: ""
+        description: "Foreign Key del id de promos"
 
       - name: shipping_id
-        description: ""
+        description: "id de la operación de envío del pedido"
 
       - name: id_date_created
-        description: ""
+        description: "id Desc. de la fecha en la que se ha creado el pedido"
 
       - name: id_date_delivered
-        description: ""
+        description: "id Desc. de la fecha en la que se ha entregado el pedido"
 
       - name: status
-        description: ""
+        description: "Atributo - Desc. del estado del pedido"
 
       - name: shipping_service
-        description: ""
+        description: "Atributo - Desc. del nombre de la compañia de transporte"
 
       - name: order_cost_usd
-        description: ""
-
+        description: "Atributo métrica - USD Descripción individual del coste de cada producto dentro de un pedido"
+        test:
+        
       - name: shipping_cost_usd
-        description: ""
+        description: "Atributo métrica - USD Descripción del coste del envío"
+        test:
+
+      - name: delivery_days
+        description: "Atributo métrica - Días que han pasado entre la fecha del pedido y su entrega. Generado a partir de la diferencia entre created_at y delivered_at"
+        test:
 
       - name: created_at
-        description: ""
+        description: "Atributo -  Desc. de la fecha y hora en la que se ha generado la orden de pedido"
 
       - name: created_date
-        description: ""
+        description: "Atributo -  Desc. de la fecha en la que se ha generado la orden de pedido"
 
       - name: delivered_at
-        description: ""
+        description: "Atributo -  Desc. de la fecha y hora en la que se ha recogido/entregado el producto"
 
       - name: delivered_date
-        description: ""
+        description: "Atributo - Desc. de la fecha en la que se ha recogido/entregado el producto"
 
       - name: estimated_delivery_at
-        description: ""
+        description: "Atributo - Fecha y hora estimada para la recogida/entrega del producto"
 
       - name: fivetran_synced
-        description: ""
+        description: "Atributo - Fecha de carga de la información"
