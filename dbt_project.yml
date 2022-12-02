@@ -58,7 +58,6 @@ models:
         {%- endif -%}
 
       core:
-        +docs:
         +schema: core
 
       intermediate:

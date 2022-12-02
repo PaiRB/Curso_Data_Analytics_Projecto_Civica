@@ -23,7 +23,6 @@ renamed_casted AS (
             WHEN promo_id = '' THEN ''
             ELSE md5 (promo_id)
             END AS promo_id
-        
 
         -- strings
         , TRIM(status) AS status
