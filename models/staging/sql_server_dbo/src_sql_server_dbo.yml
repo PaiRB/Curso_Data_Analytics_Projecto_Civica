@@ -35,9 +35,13 @@ sources:
           - name: state
             description: "Estado al que pertenece cada direccion"
           - name: _fivetran_deleted
-            description: ""
+            description: "Atributo - Indica si el registro ha sido borrado"
+            test:
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: boolean
           - name: _fivetran_synced
-            description: ""
+            description: "Atributo - Fecha de carga de la información"
+
 
       - name: events
         description: "Tabla de eventos de compra producidos"
@@ -81,9 +85,12 @@ sources:
           - name: page_url
             description: "Link de la pagina del producto"
           - name: _fivetran_deleted
-            description: ""
+            description: "Atributo - Indica si el registro ha sido borrado"
+            test:
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: boolean
           - name: _fivetran_synced
-            description: ""
+            description: "Atributo - Fecha de carga de la información"
 
       - name: order_items
         description: "Tabla con el contenido de los productos comprados"
@@ -106,9 +113,12 @@ sources:
               - dbt_utils.expression_is_true:
                   expression: '>= 1'
           - name: _fivetran_deleted
-            description: ""
+            description: "Atributo - Indica si el registro ha sido borrado"
+            test:
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: boolean
           - name: _fivetran_synced
-            description: ""
+            description: "Atributo - Fecha de carga de la información"
 
       - name: orders
         description: "Tabla con los pedidos realizados"
@@ -171,9 +181,12 @@ sources:
             tests:
               - not_null
           - name: _fivetran_deleted
-            description: ""
+            description: "Atributo - Indica si el registro ha sido borrado"
+            test:
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: boolean
           - name: _fivetran_synced
-            description: ""
+            description: "Atributo - Fecha de carga de la información"
 
       - name: products
         description: "Tabla que contiene los productos de la tienda"
@@ -200,9 +213,12 @@ sources:
               - dbt_utils.expression_is_true:
                   expression: '>= 0'
           - name: _fivetran_deleted
-            description: ""
+            description: "Atributo - Indica si el registro ha sido borrado"
+            test:
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: boolean
           - name: _fivetran_synced
-            description: ""
+            description: "Atributo - Fecha de carga de la información"
 
       - name: promos
         description: "Tabla que contiene los datos sobre las promociones y su estado"
@@ -217,9 +233,12 @@ sources:
           - name: discount
             description: "Porcentaje de la rebaja"
           - name: _fivetran_deleted
-            description: ""
+            description: "Atributo - Indica si el registro ha sido borrado"
+            test:
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: boolean
           - name: _fivetran_synced
-            description: ""
+            description: "Atributo - Fecha de carga de la información"
 
       - name: users
         description: "Tabla que contiene los datos de los clientes"
@@ -255,6 +274,9 @@ sources:
                   to: source('sql_server_dbo','addresses')
                   field: address_id
           - name: _fivetran_deleted
-            description: ""
+            description: "Atributo - Indica si el registro ha sido borrado"
+            test:
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: boolean
           - name: _fivetran_synced
-            description: ""
+            description: "Atributo - Fecha de carga de la información"

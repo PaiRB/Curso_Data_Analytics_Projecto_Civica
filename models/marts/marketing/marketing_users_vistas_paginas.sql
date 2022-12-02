@@ -47,3 +47,4 @@ renamed_casted AS (
     )
 
 SELECT * FROM renamed_casted
+ORDER BY first_name ASC

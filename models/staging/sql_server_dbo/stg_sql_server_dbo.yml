@@ -206,7 +206,7 @@ models:
     description: "Futura tabla de hechos Orders, contiene toda la información sobre los pedidos realizados"
     columns:
       - name: order_id
-        description: "Primary Key de la tabla events, generada como hash a partir del campo natural_order_id"
+        description: "Primary Key de la tabla orders, generada como hash a partir del campo natural_order_id"
         tests:
           - unique
           - not_null
@@ -335,10 +335,10 @@ models:
 #########################################################
 
   - name: stg_sql_server_dbo_products
-    description: "Tabla que contiene los datos sobre los productos, generada como hash a partir del campo natural_product_id"
+    description: "Tabla que contiene los datos sobre los productos"
     columns:
       - name: product_id
-        description: "Primary Key de la tabla products"
+        description: "Primary Key de la tabla products, generada como hash a partir del campo natural_product_id"
         tests:
           - unique
           - not_null
@@ -499,7 +499,7 @@ models:
           - dbt_expectations.expect_column_values_to_be_of_type:
               column_type: varchar
           - dbt_expectations.expect_column_values_to_match_like_pattern:
-              like_pattern: "%@%"
+              like_pattern: "%@%.%"
 
       - name: address_id
         description: "Foreign Key del id de addresses"
@@ -526,7 +526,7 @@ models:
     description: "Tabla que contiene los datos sobre los fechas desde 2020 hasta 2022"
     columns:
       - name: fecha_forecast
-        description: "Atributo - Desc"
+        description: "Atributo - Desc. de la fecha en formato date"
         test:
           - dbt_expectations.expect_column_values_to_be_of_type:
               column_type: date
@@ -538,7 +538,7 @@ models:
           - dbt_expectations.expect_column_values_to_be_of_type:
               column_type: varchar
           - not_null    
-          
+
       - name: anio
         description: "Atributo - Desc. del año"
         test:

@@ -1,0 +1,338 @@
+version: 2
+
+models:
+
+#########################################################
+##                TABLA DIM_ADDRESSES                  ##
+#########################################################
+
+  - name: dim_addresses
+    description: "Tabla de dimensión que contiene los datos de direcciones de envío y direcciones de los usuarios"
+    columns:
+      - name: address_id
+        description: "Primary Key de la tabla addresses, generada como hash a partir del campo natural_address_id"
+
+      - name: natural_address_id
+        description: "Primary Key natural de la tabla addresses"
+
+      - name: zipcode
+        description: "Atributo - Desc. del código postal de la dirección"
+
+      - name: address
+        description: "Atributo - Desc. de la dirección"
+
+      - name: city
+        description: "Atributo - Desc. del nombre ciudad añadido a la tabla a partir de una seed"
+
+      - name: country
+        description: "Atributo - Desc. del nombre pais a donde pertenece la dirección"
+
+      - name: state
+        description: "Atributo - Desc. del nombre estado al que pertenece la dirección"
+
+      - name: fivetran_synced
+        description: "Atributo - Fecha de carga de la información"
+
+
+#########################################################
+##                   TABLA DIM_DATES                   ##
+#########################################################
+
+  - name: dim_dates
+    description: "Tabla de dimensión que contiene los datos sobre los fechas desde 2020 hasta 2022"
+    columns:
+      - name: fecha_forecast
+        description: "Atributo - Desc. de la fecha en formato date"
+
+      - name: id_date
+        description: "Primary Key de la tabla que describe el año, mes y día de la fecha"
+
+      - name: anio
+        description: "Atributo - Desc. del año"
+
+      - name: mes
+        description: "Atributo - Desc. numérica del mes"
+
+      - name: desc_mes
+        description: "Atributo - Desc. del nombre del mes"
+
+      - name: dia_previo
+        description: "Atributo - Cálculo del día previo"
+
+      - name: anio_semana_dia
+        description: "Atributo - Desc. del año, semana del año y el día de una fecha"
+
+      - name: semana
+        description: "Atributo - Desc. del número de la semana"
+
+
+#########################################################
+##                   TABLA DIM_MESES                   ##
+#########################################################
+
+  - name: dim_meses
+    description: "Tabla de dimensión que contiene los datos sobre los meses desde 2020 hasta 2022"
+    columns:
+      - name: id_anio_mes
+        description: "id que describe el mes y el año al que pertence la fecha"
+
+      - name: desc_mes
+        description: "Atributo - Desc. del nombre del mes"
+
+      - name: mes
+        description: "Atributo - Desc. numérica del mes"
+
+      - name: mes_previo
+        description: "Atributo - Cálculo del mes previo"
+
+      - name: anio
+        description: "Atributo - Desc. del año"
+
+
+#########################################################
+##                 TABLA DIM_PRODUCTS                  ##
+#########################################################
+
+  - name: dim_products
+    description: "Tabla de dimensión que contiene los datos sobre los productos"
+    columns:
+      - name: product_id
+        description: "Primary Key de la tabla products, generada como hash a partir del campo natural_product_id"
+
+      - name: natural_product_id
+        description: "Primary Key natural de la tabla products"
+
+      - name: price_usd
+        description: "Atributo métrica - Precio del producto"
+
+      - name: provider_price_usd
+        description: "Atributo métrica - Precio supuesto como precio del proveedor"
+
+      - name: name
+        description: "Atributo - Desc. del nombre del producto"
+
+      - name: inventory
+        description: "Atributo métrica - Cantidad de producto en el almacén"
+
+      - name: fivetran_synced
+        description: "Atributo - Fecha de carga de la información"
+
+
+#########################################################
+##                  TABLA DIM_PROMOS                   ##
+#########################################################
+
+  - name: dim_promos
+    description: "Tabla de dimensión que contiene los datos sobre las promociones aplicadas a los productos"
+    columns:
+      - name: promo_id
+        description: "Primary Key de la tabla promo, generada como hash a partir del campo desc_promo"
+
+      - name: desc_promo
+        description: "Atributo - Desc. del nombre de la promoción aplicada. Primary key natural"
+
+      - name: status
+        description: "Atributo - Desc. del estado de la promoción - ACTIVE/INACTIVE"
+
+      - name: discount_usd
+        description: "Atributo métrica - Número plano que se descuenta al coste del pedido"
+
+      - name: fivetran_synced
+        description: "Atributo - Fecha de carga de la información"
+
+
+#########################################################
+##                  TABLA DIM_USERS                    ##
+#########################################################
+
+models:
+  - name: dim_users
+    description: "Tabla de dimensión que contiene los datos sobre los usuarios/clientes"
+    columns:
+      - name: user_id
+        description: "Primary Key de la tabla users, generada como hash a partir del campo natural_user_id"
+
+      - name: natural_user_id
+        description: "Primary Key natural de la tabla users"
+
+      - name: address_id
+        description: "Foreign Key del id de addresses"
+
+      - name: id_date_created
+        description: "id que describe el año, mes y día al que pertence la fecha de creación del usuario"
+
+      - name: id_date_updated
+        description: "id que describe el año, mes y día al que pertence la fecha de la última actualización del usuario"
+
+      - name: first_name
+        description: "Atributo - Desc. del nombre del usuario"
+
+      - name: last_name
+        description: "Atributo - Desc. del apellido del usuario"
+
+      - name: phone_number
+        description: "Atributo - Desc. del número de teléfono del usuario"
+
+      - name: email
+        description: "Atributo - Desc. del email del usuario"
+
+      - name: gender
+        description: "Atributo métrica - Desc. del sexo del usuario. Generado mediante un UNICODE de user_id"
+
+      - name: age
+        description: "Atributo métrica - Desc. de la edad del usuario. Generado a partir de la diferencia entre el UNICODE de first_name y el de last_name/2"
+
+      - name: total_orders
+        description: "Atributo métrica - Número total de ordenes que ha realizado el usuario"
+
+      - name: created_at
+        description: "Atributo - Desc. de la fecha y hora en la que se ha generado el registro de usuario"
+
+      - name: created_date
+        description: "Atributo - Desc. de la fecha en la que se ha actualizado el registro de usuario. Generado a partir de created_at"
+
+      - name: updated_at
+        description: "Atributo - Desc. de la fecha y hora en la que se ha actualizado el registro de usuario"
+
+      - name: updated_date
+        description: "Atributo - Desc. de la fecha en la que se ha actualizado el registro de usuario. Generado a partir de created_at"
+
+      - name: fivetran_synced
+        description: "Atributo - Fecha de carga de la información"
+
+#########################################################
+##                 TABLA FACT_BUDGET                   ##
+#########################################################
+
+  - name: fact_budget
+    description: "Tabla de dimensión que contiene los datos de las ventas esperadas por producto, agrupadas por meses"
+    columns:
+      - name: id_anio_mes
+        description: "id que describe el mes y el año al que pertence el registro de budget"
+
+      - name: budget_id
+        description: "Primary Key de la tabla budget, generada como hash a partir del campo natural_budget_id"
+
+      - name: natural_budget_id
+        description: "Primary Key natural de la tabla budget"
+
+      - name: product_id
+        description: "Foreign Key del id de products"
+
+      - name: name
+        description: "Atributo - Desc. del nombre del producto"
+
+      - name: quantity
+        description: "Atributo métrica - Cantidad vendida esperada de cada producto"
+
+      - name: quantity_sold
+        description: "Atributo métrica - Cantidad vendida en realidad. Obtenido de la tabla orderitems"
+        test:
+
+      - name: price_usd
+        description: "Atributo métrica - USD Precio de cada producto individual"
+        test:
+
+      - name: stimated_sales_usd
+        description: "Atributo métrica - USD Beneficio e se espera obtener. Generada al multiplicar el price por quantity"
+        test:
+
+      - name: sales_usd
+        description: "Atributo métrica - USD Ventas obtenidas por cada producto. Generada al multiplicar el price por quantity_sold"
+        test:
+
+      - name: discount_usd
+        description: "Atributo métrica - USD Descuento total por cada producto. Obtenido de la tabla orders. "
+        test:
+
+      - name: real_sales_usd
+        description: "Atributo métrica - USD Ventas obtenidas por cada producto. Generada al restar discount_USD a sales_USD "
+        test:
+
+      - name: provider_cost_usd
+        description: "Atributo métrica - USD Coste de obtener cada producto del proveedor. Obtenido de la tabla products"
+        test:
+
+      - name: profit
+        description: "Atributo métrica - USD Beneficio resultante de la diferencia entre real_sales_USD y provider_cost_USD"
+        test:
+
+      - name: fivetran_synced
+        description: "Atributo - Fecha de carga de la información"
+
+#########################################################
+##                  TABLA FACT_ORDERS                  ##
+#########################################################
+
+  - name: fact_orders
+    description: "Tabla de hechos Orders, contiene toda la información sobre los pedidos realizados"
+    columns:
+      - name: fact_order_id
+        description: "Primary Key de la tabla orders, generada como hash a partir de la concatenación de order_id y natural_order_id"
+        test:
+          -unique
+          -not_null
+
+      - name: order_id
+        description: "id de la tabla stg_events, generada como hash a partir del campo natural_order_id"
+
+      - name: natural_order_id
+        description: "Primary Key natural de la tabla orders"
+
+      - name: product_id
+        description: "Foreign Key del id de products"
+        test:
+
+      - name: user_id
+        description: "Foreign Key del id de users"
+
+      - name: address_id
+        description: "Foreign Key del id de address"
+
+      - name: promo_id
+        description: "Foreign Key del id de promos"
+
+      - name: shipping_id
+        description: "id de la operación de envío del pedido"
+
+      - name: id_date_created
+        description: "id Desc. de la fecha en la que se ha creado el pedido"
+
+      - name: id_date_delivered
+        description: "id Desc. de la fecha en la que se ha entregado el pedido"
+
+      - name: status
+        description: "Atributo - Desc. del estado del pedido"
+
+      - name: shipping_service
+        description: "Atributo - Desc. del nombre de la compañia de transporte"
+
+      - name: order_cost_usd
+        description: "Atributo métrica - USD Descripción individual del coste de cada producto dentro de un pedido"
+        test:
+        
+      - name: shipping_cost_usd
+        description: "Atributo métrica - USD Descripción del coste del envío"
+        test:
+
+      - name: delivery_days
+        description: "Atributo métrica - Días que han pasado entre la fecha del pedido y su entrega. Generado a partir de la diferencia entre created_at y delivered_at"
+        test:
+
+      - name: created_at
+        description: "Atributo -  Desc. de la fecha y hora en la que se ha generado la orden de pedido"
+
+      - name: created_date
+        description: "Atributo -  Desc. de la fecha en la que se ha generado la orden de pedido"
+
+      - name: delivered_at
+        description: "Atributo -  Desc. de la fecha y hora en la que se ha recogido/entregado el producto"
+
+      - name: delivered_date
+        description: "Atributo - Desc. de la fecha en la que se ha recogido/entregado el producto"
+
+      - name: estimated_delivery_at
+        description: "Atributo - Fecha y hora estimada para la recogida/entrega del producto"
+
+      - name: fivetran_synced
+        description: "Atributo - Fecha de carga de la información"

@@ -1,0 +1,169 @@
+version: 2
+
+models:
+
+#########################################################
+##             TABLA MARKETING_ORDERS                  ##
+#########################################################
+
+  - name: marketing_orders
+    description: "Tabla en la que se recogen información de cada pedido, los datos del cliente, el coste total del pedido y el tiempo de entrega"
+    columns:
+      - name: natural_order_id
+        description: "Primary Key natural de la tabla orders"
+
+      - name: client_full_name
+        description: "Atributo - Concatenación del first name y last name de cada cliente"
+
+      - name: phone_number
+        description: "Atributo - Número de teléfono de cada cliente"
+
+      - name: email
+        description: "Atributo - email de cada usuario"
+
+      - name: order_cost_usd
+        description: "Atributo métrica - USD Coste de cada pedido, obtenido de sumar los costes de los productos en cada pedido"
+        test:
+          - dbt_utils.expression_is_true:
+               expression: '>= 0'
+          - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: float
+
+      - name: shipping_cost_usd
+        description: "Atributo métrica - USD Coste del envío de cada pedido"
+        test:
+          - dbt_utils.expression_is_true:
+               expression: '>= 0'
+          - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: float
+
+      - name: discount_usd
+        description: "Atributo métrica - USD Descuento de cada pedido, obtenido de la tabla promos"
+        test:
+          - dbt_utils.expression_is_true:
+               expression: '>= 0'
+          - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: float
+
+      - name: total_order_usd
+        description: "Atributo métrica _ USD Coste total del pedido, obtenido tras restar a order_cost_usd el shipping_cost_usd y discount_usd"
+        test:
+          - dbt_utils.expression_is_true:
+               expression: '>= 0'
+          - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: float
+   
+
+#########################################################
+##        TABLA MARKETING_USER_VISTAS_PAGINAS          ##
+#########################################################
+
+  - name: marketing_users_vistas_paginas
+    description: "Tabla que muestra los muestra los distintos inicios de sesión de cada usuario, la duración de la sesión y las páginas que ha visitado"
+    columns:
+      - name: user_id
+        description: "Primary Key de la tabla users, generada como hash a partir del campo natural_user_id"
+
+      - name: session_id
+        description: "Primary Key de la tabla events, generada como hash a partir del campo natural_session_id"
+
+      - name: first_name
+        description: "Atributo - Desc. del nombre del usuario"
+
+      - name: last_name
+        description: "Atributo - Desc. del apellido del ususario"
+
+      - name: email
+        description: "Atributo - Desc. del email del usuario"
+
+      - name: inicio_session
+        description: "Atributo métrica - Desc. de la hora de la fecha y hora del inicio de sesión"
+        test:
+
+      - name: fin_session
+        description: "Atributo métrica - Desc. de la hora de la fecha y hora del fin de sesión"
+        test:
+
+      - name: minutos_duracion
+        description: "Atributo métrica - Desc. de los minutos que ha durado la sesión. Calculado mediante la diferencia entre fin_session y inicio_session"
+        test:
+          - dbt_utils.expression_is_true:
+              expression: '>= 0'
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: float
+
+      - name: add_to_cart
+        description: "Atributo métrica - Cantidad de visitas en la página add_to_cart por usuario y sesion"
+        test:
+          - dbt_utils.expression_is_true:
+              expression: '>= 0'
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: float
+
+      - name: page_view
+        description: "Atributo métrica - Cantidad de visitas en la página page_view por usuario y sesion"
+        test:
+          - dbt_utils.expression_is_true:
+              expression: '>= 0'
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: float
+
+      - name: checkout
+        description: "Atributo métrica - Cantidad de visitas en la página checkout por usuario y sesion"
+        test:
+          - dbt_utils.expression_is_true:
+              expression: '>= 0'
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: float
+
+      - name: package_shipped
+        description: "Atributo métrica - Cantidad de visitas en la página package_shipped por usuario y sesion"
+        test:
+          - dbt_utils.expression_is_true:
+              expression: '>= 0'
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: float
+
+#########################################################
+##        TABLA MARKETING_VENTAS_MES_BENEFICIOS        ##
+#########################################################
+
+  - name: marketing_ventas_mes_beneficios
+    description: "Tabla que muestra por cada mes, las ventas esperadas, ventas reales y "
+    columns:
+      - name: id_anio_mes
+        description: ""
+
+      - name: stimated_sales_usd
+        description: "Atributo métrica - USD Ventas esperadas. Generado a partir de la cantidad de producto que se espera vender cada mes y su precio"
+        test:
+
+      - name: sales_usd
+        description: "Atributo métrica - USD Ventas reales. Generado a partir de la cantidad real de producto que se ha comprado, multiplicado por su precio"
+        test:
+          - dbt_utils.expression_is_true:
+               expression: '>= 0'
+
+      - name: discount_usd
+        description: "Atributo métrica - USD Suma del total de descuentos de cada pedido por mes. Obtenido de la tabla promos"
+        test:
+          - dbt_utils.expression_is_true:
+               expression: '>= 0'
+
+      - name: sales_minus_discounts_usd
+        description: "Atributo métrica - USD Ventas reales tras restarle los descuentos aplicados. Se utilizará para calcular el beneficio real del negocio"
+        test:
+          - dbt_utils.expression_is_true:
+               expression: '>= 0'
+
+      - name: provider_cost_usd
+        description: "Atributo métrica - USD Coste total de la obtención de cada producto. Se utilizará para calcular el beneficio real del negocio"
+        test:
+          - dbt_utils.expression_is_true:
+               expression: '>= 0'
+
+      - name: profit
+        description: "Atributo métrica - USD Diferencia entre sales_minus_discounts_USD y provider_cost_USD. Representa el beneficio neto obtenido en cada mes"
+        test:
+          - dbt_utils.expression_is_true:
+               expression: '>= 0'
