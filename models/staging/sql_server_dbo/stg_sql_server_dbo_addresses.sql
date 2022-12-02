@@ -13,7 +13,7 @@ WITH src_sql_addresses AS (
 renamed_casted AS (
     SELECT
         -- ids
-        md5(address_id) AS address_id
+        md5(TRIM(address_id)) AS address_id
         , TRIM(address_id) AS natural_address_id
         
         -- strings

@@ -1,6 +1,6 @@
 {{
   config(
-    materialized='ephemeral'
+    materialized='view'
   )
 }}
 
@@ -58,7 +58,7 @@ SELECT
     , o.created_at 
     , o.created_date
     , o.delivered_at
-    , (CAST(DATEDIFF(hour,o.delivered_at,o.created_at) AS int)/24) AS delivery_days
+    , (CAST(DATEDIFF(hour,o.created_at,o.delivered_at) AS int)/24) AS delivery_days
     , o.delivered_date
     , o.estimated_delivery_at
     , o.fivetran_synced

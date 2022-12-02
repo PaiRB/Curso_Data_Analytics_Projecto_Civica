@@ -20,4 +20,3 @@ renamed_casted AS (
     )
 
 SELECT * FROM renamed_casted
-WHERE _fivetran_deleted = FALSE

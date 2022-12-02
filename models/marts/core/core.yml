@@ -23,6 +23,10 @@ models:
 
       - name: city
         description: "Atributo - Desc. del nombre ciudad añadido a la tabla a partir de una seed"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+          - not_null
 
       - name: country
         description: "Atributo - Desc. del nombre pais a donde pertenece la dirección"

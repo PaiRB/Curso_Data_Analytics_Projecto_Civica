@@ -39,7 +39,7 @@ SELECT
     -- numerics
     , order_cost_USD
     , shipping_cost_USD
-    , TRIM(ROUND(delivery_days),0) AS delivery_days
+    , delivery_days
 
     -- timestamps
     , created_at
