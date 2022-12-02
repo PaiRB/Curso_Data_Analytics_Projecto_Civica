@@ -32,7 +32,7 @@ clean-targets:         # directories to be removed by `dbt clean`
 # using the `{{ config(...) }}` macro.
 models:
   +transient: false
-  curso:
+  my_new_project:
     # Applies to all files under models/example/
 
     staging:
@@ -56,18 +56,16 @@ models:
         {%- elif target.name == 'pro'-%} pro_gold_db_alumno23
         {%- else -%} {{target.database}}_gold_db_alumno23
         {%- endif -%}
-      tags: ['Gold']
+
       core:
         +docs:
-          node_color: "#FFD700"
-        tags: ['Core']
         +schema: core
 
       intermediate:
-        +docs:
-          node_color: "#FF800"
-        tags: ['Intermediate']
         +schema: intermediate
+      
+      marketing:
+        +schema: marketing
         
 snapshots:
   +sql_header: "alter session set timezone = 'Europe/Madrid';alter session set week_start = 7;"
