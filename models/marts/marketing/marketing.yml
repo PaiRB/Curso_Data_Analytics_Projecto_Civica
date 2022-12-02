@@ -25,9 +25,9 @@ models:
         description: "Atributo métrica - USD Coste de cada pedido, obtenido de sumar los costes de los productos en cada pedido"
         test:
           - dbt_utils.expression_is_true:
-               expression: '>= 0'
+              expression: '>= 0'
           - dbt_expectations.expect_column_values_to_be_of_type:
-                  column_type: float
+              column_type: float
 
       - name: shipping_cost_usd
         description: "Atributo métrica - USD Coste del envío de cada pedido"

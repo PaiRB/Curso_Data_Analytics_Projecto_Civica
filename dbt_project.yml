@@ -56,9 +56,17 @@ models:
         {%- elif target.name == 'pro'-%} pro_gold_db_alumno23
         {%- else -%} {{target.database}}_gold_db_alumno23
         {%- endif -%}
+      tags: ['Gold']
       core:
+        +docs:
+          node_color: "#FFD700"
+        tags: ['Core']
         +schema: core
+
       intermediate:
+        +docs:
+          node_color: "#FF800"
+        tags: ['Intermediate']
         +schema: intermediate
         
 snapshots:

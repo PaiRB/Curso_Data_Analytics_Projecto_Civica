@@ -147,7 +147,7 @@ models:
           - dbt_expectations.expect_column_values_to_be_of_type:
               column_type: varchar
           - dbt_expectations.expect_column_values_to_match_like_pattern:
-              like_pattern: "%.%"
+              like_pattern: "https://%.%"
 
       - name: fivetran_synced
         description: "Atributo - Fecha de carga de la información"    

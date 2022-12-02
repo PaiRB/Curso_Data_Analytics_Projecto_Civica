@@ -33,3 +33,4 @@ renamed as (
     from src_sql_events
 )
 SELECT * FROM renamed
+ORDER BY session_id
