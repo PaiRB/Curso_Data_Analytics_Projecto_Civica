@@ -14,9 +14,9 @@ renamed as (
 
     select
         -- ids
-        md5(TRIM(u.user_id)) AS user_id
-        , TRIM(u.user_id) AS natural_user_id
-        , md5(TRIM(u.address_id)) AS address_id
+        md5(TRIM(user_id)) AS user_id
+        , TRIM(user_id) AS natural_user_id
+        , md5(TRIM(address_id)) AS address_id
         , year(created_at)*10000+month(created_at)*100+day(created_at) as id_date_created
         , year(updated_at)*10000+month(updated_at)*100+day(updated_at) as id_date_updated
 
@@ -36,7 +36,7 @@ renamed as (
         , updated_at ::DATE AS updated_date
         , _fivetran_synced ::timestamp_ltz AS fivetran_synced
 
-    from src_sql_users u 
+    from src_sql_users
 
 )
 

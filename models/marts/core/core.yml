@@ -182,13 +182,23 @@ models:
 
       - name: gender
         description: "Atributo métrica - Desc. del sexo del usuario. Generado mediante un UNICODE de user_id"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['F','M']              
 
       - name: age
         description: "Atributo métrica - Desc. de la edad del usuario. Generado a partir de la diferencia entre el UNICODE de first_name y el de last_name/2"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: number
+          - dbt_utils.expression_is_true:
+              expression: '>= 18'
 
       - name: total_orders
         description: "Atributo métrica - Número total de ordenes que ha realizado el usuario"
-
+              
       - name: created_at
         description: "Atributo - Desc. de la fecha y hora en la que se ha generado el registro de usuario"
 
@@ -209,7 +219,7 @@ models:
 #########################################################
 
   - name: fact_budget
-    description: "Tabla de dimensión que contiene los datos de las ventas esperadas por producto, agrupadas por meses"
+    description: "Tabla de hechos que contiene los datos de las ventas esperadas por producto, agrupadas por meses"
     columns:
       - name: id_anio_mes
         description: "id que describe el mes y el año al que pertence el registro de budget"
@@ -231,38 +241,71 @@ models:
 
       - name: quantity_sold
         description: "Atributo métrica - Cantidad vendida en realidad. Obtenido de la tabla orderitems"
-        test:
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: number
 
       - name: price_usd
         description: "Atributo métrica - USD Precio de cada producto individual"
-        test:
 
       - name: stimated_sales_usd
         description: "Atributo métrica - USD Beneficio e se espera obtener. Generada al multiplicar el price por quantity"
-        test:
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: number
+          - dbt_utils.expression_is_true:
+              expression: '>= 0'              
 
       - name: sales_usd
         description: "Atributo métrica - USD Ventas obtenidas por cada producto. Generada al multiplicar el price por quantity_sold"
-        test:
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: number
+          - dbt_utils.expression_is_true:
+              expression: '>= 0'
 
       - name: discount_usd
         description: "Atributo métrica - USD Descuento total por cada producto. Obtenido de la tabla orders. "
-        test:
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: number
+          - dbt_utils.expression_is_true:
+              expression: '>= 0'
 
       - name: real_sales_usd
         description: "Atributo métrica - USD Ventas obtenidas por cada producto. Generada al restar discount_USD a sales_USD "
-        test:
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: number
+          - dbt_utils.expression_is_true:
+              expression: '>= 0'
 
       - name: provider_cost_usd
         description: "Atributo métrica - USD Coste de obtener cada producto del proveedor. Obtenido de la tabla products"
-        test:
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: number
+          - dbt_utils.expression_is_true:
+              expression: '>= 0'
 
       - name: profit
         description: "Atributo métrica - USD Beneficio resultante de la diferencia entre real_sales_USD y provider_cost_USD"
-        test:
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: number
+          - dbt_utils.expression_is_true:
+              expression: '>= 0'
 
       - name: fivetran_synced
         description: "Atributo - Fecha de carga de la información"
+
+
+#########################################################
+##                  TABLA FACT_EVENTS                  ##
+#########################################################
+
+
+
 
 #########################################################
 ##                  TABLA FACT_ORDERS                  ##
@@ -313,15 +356,27 @@ models:
 
       - name: order_cost_usd
         description: "Atributo métrica - USD Descripción individual del coste de cada producto dentro de un pedido"
-        test:
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: number
+          - dbt_utils.expression_is_true:
+              expression: '>= 0'
         
       - name: shipping_cost_usd
         description: "Atributo métrica - USD Descripción del coste del envío"
-        test:
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: float
+          - dbt_utils.expression_is_true:
+              expression: '>= 0'
 
       - name: delivery_days
         description: "Atributo métrica - Días que han pasado entre la fecha del pedido y su entrega. Generado a partir de la diferencia entre created_at y delivered_at"
-        test:
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: number
+          - dbt_utils.expression_is_true:
+              expression: '>= 0'
 
       - name: created_at
         description: "Atributo -  Desc. de la fecha y hora en la que se ha generado la orden de pedido"

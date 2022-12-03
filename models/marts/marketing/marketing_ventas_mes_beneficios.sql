@@ -24,7 +24,7 @@ renamed_casted AS (
         , SUM(discount_USD) AS discount_USD
         , SUM(real_sales_USD) AS sales_minus_discounts_USD
         , SUM(provider_cost_USD) AS provider_cost_USD
-        , SUM(profit) AS profit
+        , SUM(profit) AS profit_USD
 
     FROM calculo_budgets
 
