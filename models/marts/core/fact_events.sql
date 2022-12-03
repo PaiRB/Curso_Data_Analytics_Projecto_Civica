@@ -10,19 +10,7 @@
 
 WITH fact_events AS (
     SELECT * 
-    FROM {{ ref('stg_sql_server_dbo_events') }}
-    ),
-
-fact_products AS (
-    SELECT 
-      *
-    FROM {{ ref('stg_sql_server_dbo_products') }}
-    ),
-
-fact_users AS (
-    SELECT 
-      *
-    FROM {{ ref('stg_sql_server_dbo_users') }}
+    FROM {{ ref('intermediate_events') }}
     ),
 
 ---------------------------------------------------------------------
@@ -32,33 +20,29 @@ fact_users AS (
 renamed_casted AS (
     SELECT
         -- ids
-        e.event_id
-        , e.natural_event_id
-        , u.user_id
-        , e.session_id
-        , p.product_id
+        event_id
+        , natural_event_id
+        , user_id
+        , session_id
+        , product_id
 
 
         -- strings
-        , p.name AS product_name
-        , e.event_type
-        , e.url
+        , product_name
+        , event_type
+        , url
+        , dispositve_type
         , CASE
-          WHEN TRIM(UNICODE(natural_event_id)) >=55 THEN 'smart_phone'
-          ELSE 'personal_computer'
-          END AS dispositve_type
-
-        -- numerics 
-
+            WHEN from_page <= 0.2 THEN 'youtube_ads'
+            WHEN 0.2 < from_page <= 0.4 THEN 'youtube_promo'
+            WHEN 0.4 < from_page <= 0.6 THEN 'instagram_profile'
+            ELSE 'google_search'
+          END AS from_page
 
         -- timestamps
-        , e.created_at
+        , created_at
 
-    FROM fact_events e
-        LEFT JOIN fact_users u
-        ON e.user_id = u.user_id
-        LEFT JOIN fact_products p
-        ON e.product_id = p.product_id
+    FROM fact_events
 
     )
 

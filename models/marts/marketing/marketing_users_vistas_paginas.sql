@@ -18,7 +18,7 @@ WITH stg_events AS (
 datos_user AS (
     SELECT 
       *
-    FROM {{ ref('stg_sql_server_dbo_users') }}
+    FROM {{ ref('dim_users') }}
     ),
 
 ---------------------------------------------------------------------
@@ -29,9 +29,9 @@ renamed_casted AS (
     SELECT
         e.user_id
         , e.session_id
-        , d.first_name
-        , d.last_name
-        , d.email
+        , u.first_name
+        , u.last_name
+        , u.email
         , min(e.created_at) as inicio_session
         , max(e.created_at) as fin_session
         , datediff(minute, min(e.created_at), max(e.created_at)) AS minutos_duracion 
@@ -41,8 +41,8 @@ renamed_casted AS (
         {%- if not loop.last %},{% endif -%}
         {% endfor %}
     FROM stg_events e
-    JOIN datos_user d
-    ON e.user_id = d.user_id
+    JOIN datos_user u
+    ON e.user_id = u.user_id
     {{ dbt_utils.group_by(5)}}
     )
 

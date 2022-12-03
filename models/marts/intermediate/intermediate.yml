@@ -1,23 +1,163 @@
 version: 2
 
+models:
+
 #########################################################
 ##         TABLA CALCULO_BENEFICIOS_ESPERADOS          ##
 #########################################################
 
+  - name: calculo_beneficios_esperados
+    description: "Tabla de calculo de los beneficios esperados por cada producto y por mes"
+    columns:
+      - name: budget_id
+        description: "Primary Key de la tabla budget, generada como hash a partir del campo natural_budget_id"
+
+      - name: natural_budget_id
+        description: "Primary Key natural de la tabla budget"
+
+      - name: product_id
+        description: "Foreign Key del id de products"
+
+      - name: id_anio_mes
+        description: "id que describe el mes y el año al que pertence la fecha"
+
+      - name: name
+        description: "Atributo - Desc. del nombre del producto"
+
+      - name: quantity
+        description: "Atributo métrica - Cantidad vendida esperada de cada producto"
+
+      - name: price_usd
+        description: "Atributo métrica - USD Precio de cada producto individual"
+
+      - name: stimated_sales_usd
+        description: Atributo métrica - USD Beneficio e se espera obtener. Generada al multiplicar el price por quantity"
+
+      - name: date
+        description: "Atributo - Desc. de la fecha"
+
+      - name: fivetran_synced
+        description: "Atributo - Fecha de carga de la información"
 
 
 #########################################################
 ##           TABLA CALCULO_ORDERS_POR_USER             ##
 #########################################################
 
+  - name: calculo_orders_por_user
+    description: "Tabla de calculo de cuantos pedidos ha realizado cada usuario"
+    columns:
+      - name: user_id
+        description: "Primary key de los usuarios, proveniente de la tabla stg_sql_dbo_users"
 
+      - name: num_orders
+        description: "Atributo métrica - Número total de ordenes que ha realizado el usuario calculado a partir del conteo de order_id agrupado por cada usuario"
+        tests:
 
 #########################################################
 ##            TABLA CONTEO_VENTAS_PRODUCTO             ##
 #########################################################
 
+  - name: conteo_ventas_producto
+    description: "Tabla de calculo del beneficio bruto obtenido para cada producto y cada mes"
+    columns:
+      - name: id_anio_mes
+        description: "id que describe el mes y el año al que pertence la fecha"
+
+      - name: product_id
+        description: "Primary Key de la tabla products, generada como hash a partir del campo natural_product_id"
+
+      - name: name
+        description: "Atributo - Desc. del nombre del producto"
+
+      - name: quantity_sold
+        description: "Atributo métrica - Cantidad vendida de cada producto"
+
+      - name: price_usd
+        description: "Atributo métrica - USD Precio de cada producto individual"
+
+      - name: sales_usd
+        description: "Atributo métrica - USD Representa el beneficio bruto de las vetas. Cantidad obtenida de multiplicar el price_usd por quantity_sold"
+
+      - name: discount_usd
+        description: "Atributo métrica - USD Descuento aplicado a cada pedido"
+
+      - name: provider_cost_usd
+        description: "Atributo métrica - Precio supuesto como precio del proveedor"
 
 
 #########################################################
 ##             TABLA INTERMEDIATE_ORDERS               ##
 #########################################################
+
+  - name: intermediate_orders
+    description: "Paso previo a la tabla fact_orders, se va a utilizar para agrupar las ventas por cada orden"
+    columns:
+      - name: order_id
+        description: "id de la tabla stg_events, generada como hash a partir del campo natural_order_id"
+
+      - name: natural_order_id
+        description: "Primary Key natural de la tabla orders"
+
+      - name: product_id
+        description: "Foreign Key del id de products"
+
+      - name: user_id
+        description: "Foreign Key del id de users"
+
+      - name: address_id
+        description: "Foreign Key del id de address"
+
+      - name: promo_id
+        description: "Foreign Key del id de promos"
+
+      - name: id_date_created
+        description: "id Desc. de la fecha en la que se ha creado el pedido"
+
+      - name: id_date_delivered
+        description: "id Desc. de la fecha en la que se ha entregado el pedido"
+
+      - name: status
+        description: "Atributo - Desc. del estado del pedido"
+
+      - name: shipping_service
+        description: "Atributo - Desc. del nombre de la compañia de transporte"
+
+      - name: discount_usd
+        description: "Atributo métrica - USD Descuento aplicado a cada pedido"
+
+      - name: price_usd
+        description: "Atributo métrica - USD Precio de cada producto individual"
+
+      - name: quantity
+        description: "Atributo métrica - Cantidad vendida de cada producto"
+
+      - name: order_cost_usd
+        description: "Atributo métrica - USD Descripción individual del coste de cada producto dentro de un pedido"
+
+      - name: shipping_id
+        description: "id de la operación de envío del pedido"
+
+      - name: shipping_cost_usd
+        description: "Atributo métrica - USD Descripción del coste del envío"
+
+      - name: created_at
+        description: "Atributo -  Desc. de la fecha y hora en la que se ha generado la orden de pedido"
+
+      - name: created_date
+        description: "Atributo -  Desc. de la fecha en la que se ha generado la orden de pedido"
+
+      - name: delivered_at
+        description: "Atributo -  Desc. de la fecha y hora en la que se ha recogido/entregado el producto"
+
+      - name: delivery_days
+        description: "Atributo métrica - Días que han pasado entre la fecha del pedido y su entrega. Generado a partir de la diferencia entre created_at y delivered_at"
+
+      - name: delivered_date
+        description: "Atributo - Desc. de la fecha en la que se ha recogido/entregado el producto"
+
+      - name: estimated_delivery_at
+        description: "Atributo - Fecha y hora estimada para la recogida/entrega del producto"
+
+      - name: fivetran_synced
+        description: "Atributo - Fecha de carga de la información"
