@@ -1,6 +1,7 @@
 {{
   config(
-    materialized='table'
+    materialized='table',
+    unique_key = 'event_id'
   )
 }}
 
@@ -33,9 +34,9 @@ renamed_casted AS (
         , url
         , dispositve_type
         , CASE
-            WHEN from_page <= 0.2 THEN 'youtube_ads'
-            WHEN 0.2 < from_page <= 0.4 THEN 'youtube_promo'
-            WHEN 0.4 < from_page <= 0.6 THEN 'instagram_profile'
+            WHEN from_page <= 0.1 THEN 'youtube_ads'
+            WHEN from_page between 0.11 AND 0.3 THEN 'youtube_promo'
+            WHEN from_page between 0.31 AND 0.5 THEN 'instagram_profile'
             ELSE 'google_search'
           END AS from_page
 

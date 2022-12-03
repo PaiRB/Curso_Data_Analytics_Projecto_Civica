@@ -8,11 +8,13 @@
 --------------------------REFERENCES TO STG--------------------------
 ---------------------------------------------------------------------
 
-{% set event_types = obtener_valores(ref('stg_sql_server_dbo_events'),'event_type') %}
+{% set event_types = obtener_valores(ref('fact_events'),'event_type') %}
+{% set from_pages = obtener_valores(ref('fact_events'),'from_page') %}
+
 WITH stg_events AS (
     SELECT 
      * 
-    FROM {{ ref('stg_sql_server_dbo_events') }}
+    FROM {{ ref('fact_events') }}
     ),
 
 datos_user AS (
@@ -38,6 +40,11 @@ renamed_casted AS (
         ,
         {%- for event_type in event_types   %}
         coalesce(sum(case when event_type = '{{event_type}}' then 1 end),0) as {{event_type}}
+        {%- if not loop.last %},{% endif -%}
+        {% endfor %}
+        ,
+        {%- for from_page in from_pages   %}
+        coalesce(sum(case when from_page = '{{from_page}}' then 1 end),0) as {{from_page}}
         {%- if not loop.last %},{% endif -%}
         {% endfor %}
     FROM stg_events e

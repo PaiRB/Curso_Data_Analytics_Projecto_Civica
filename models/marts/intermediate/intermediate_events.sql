@@ -49,7 +49,7 @@ renamed_casted AS (
           END AS dispositve_type
 
         -- numerics 
-        , CAST(TRIM(UNICODE(session_id))+COALESCE(TRIM(UNICODE(p.name)),0) AS NUMBER(38,2))%1.2 AS from_page
+        , CAST(TRIM(UNICODE(session_id))+COALESCE(TRIM(UNICODE(p.name)),0) AS NUMBER(38,2))%1.1 AS from_page
 
         -- timestamps
         , e.created_at
