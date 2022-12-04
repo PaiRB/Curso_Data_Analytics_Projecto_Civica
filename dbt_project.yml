@@ -56,13 +56,10 @@ models:
         {%- elif target.name == 'pro'-%} pro_gold_db_alumno23
         {%- else -%} {{target.database}}_gold_db_alumno23
         {%- endif -%}
-
       core:
         +schema: core
-
       intermediate:
         +schema: intermediate
-      
       marketing:
         +schema: marketing
         
