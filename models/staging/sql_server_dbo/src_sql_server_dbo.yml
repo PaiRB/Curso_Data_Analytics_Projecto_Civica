@@ -7,8 +7,8 @@ sources:
     description: "Schema con los tablas de sql sever"
     database: |  
       {%- if  target.name == 'user_dev' -%} dev_bronze_db_alumno23
-      {%- elif target.name == 'ci' -%} pro_bronze_db_alumno23 
-      {%- elif target.name == 'pro'-%} pro_bronze_db_alumno23 
+      {%- elif target.name == 'ci' -%} pro_bronze_db_alumno23
+      {%- elif target.name == 'pro'-%} pro_bronze_db_alumno23
       {%- else -%} {{target.database}}_bronze_db_alumnoa23
       {%- endif -%}
 

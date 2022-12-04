@@ -13,7 +13,7 @@ WITH src_sql_products AS (
 renamed as (
     select
         -- ids
-        md5 (product_id) AS product_id
+        md5(TRIM(product_id)) AS product_id
         , TRIM(product_id) AS natural_product_id
 
         -- strings

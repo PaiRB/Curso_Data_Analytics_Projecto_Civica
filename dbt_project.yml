@@ -51,7 +51,7 @@ models:
     marts:
       +materialized: table
       +database: |  
-        {%- if  target.name == 'user_dev' -%} dev_gold_db_alumno23 
+        {%- if  target.name == 'user_dev' -%} dev_gold_db_alumno23
         {%- elif target.name == 'ci' -%} pro_gold_db_alumno23
         {%- elif target.name == 'pro'-%} pro_gold_db_alumno23
         {%- else -%} {{target.database}}_gold_db_alumno23
@@ -70,7 +70,7 @@ snapshots:
   +sql_header: "alter session set timezone = 'Europe/Madrid';alter session set week_start = 7;"
   +transient: false
   +target_database: |  
-        {%- if  target.name == 'user_dev' -%} dev_silver_db_alumno23 
+        {%- if  target.name == 'user_dev' -%} dev_silver_db_alumno23
         {%- elif target.name == 'ci' -%} pro_silver_db_alumno23
         {%- elif target.name == 'pro'-%} pro_silver_db_alumno23
         {%- else -%} {{target.database}}_silver_db_alumno23

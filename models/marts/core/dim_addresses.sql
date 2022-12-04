@@ -1,6 +1,6 @@
 {{
   config(
-    materialized='incremental',
+    materialized='table',
     unique_key='address_id'
   )
 }}
@@ -49,10 +49,11 @@ renamed_casted AS (
 SELECT * FROM renamed_casted 
 ORDER BY zipcode
 
-
+/*
 {% if is_incremental() %}
 
   -- this filter will only be applied on an incremental run
   where fivetran_synced > (select max(fivetran_synced) from {{ this }})
 
 {% endif %}
+*/
