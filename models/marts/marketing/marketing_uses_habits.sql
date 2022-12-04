@@ -1,10 +1,10 @@
 {{
   config(
-    materialized='view'
+    materialized='ephemeral'
   )
 }}
 
-WITH stg_events AS (
+WITH marketing_events AS (
     SELECT 
      * 
     FROM {{ ref('marketing_users_vistas_paginas') }}
@@ -33,7 +33,7 @@ renamed_casted AS (
         , SUM(instagram_profile) AS from_instagram_profile
         , SUM(google_search) AS from_google_search
 
-    FROM stg_events e
+    FROM marketing_events e
         JOIN dim_users u
         ON e.user_id = u.user_id
     {{ dbt_utils.group_by(5)}}
