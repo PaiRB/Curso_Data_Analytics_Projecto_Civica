@@ -39,19 +39,20 @@ WITH prueba_orders AS (
       , status
     ),
 
-/*
-prueba_shipping AS (
-    SELECT 
-        shipping_id
-        , shipping_cost_USD
-        , shipping_service
-    FROM {{ref('dim_shipping') }}
+
+prueba_orders_dos AS (
+    SELECT
+        order_id
+        , natural_order_id
+        
+    FROM {{ ref('fact_orders') }}
     ),
-*/
+
 
 prueba_users AS (
     SELECT 
         user_id
+        , client_full_name
         , first_name
         , last_name
         , phone_number
@@ -72,10 +73,11 @@ prueba_promos AS (
 
 SELECT
     -- ids
-    natural_order_id
+    dos.order_id
+    , o.natural_order_id
 
     -- strings
-    , CONCAT(first_name,' ',last_name) AS Client_Full_Name
+    , client_full_name
     , phone_number
     , email
 
@@ -90,13 +92,13 @@ SELECT
 FROM prueba_orders o 
   FULL JOIN prueba_promos p
   ON o.promo_id = p.promo_id
-  --FULL JOIN prueba_shipping s
-  --ON o.shipping_id = s.shipping_id
   LEFT JOIN prueba_users u
-  ON o.user_id = u.user_id 
+  ON o.user_id = u.user_id
+  LEFT JOIN prueba_orders_dos dos
+  ON o.natural_order_id = dos.natural_order_id
   
-{{ dbt_utils.group_by(10)}}
-ORDER BY Client_Full_Name ASC
+{{ dbt_utils.group_by(11)}}
+ORDER BY client_full_name ASC
 
 
 /*

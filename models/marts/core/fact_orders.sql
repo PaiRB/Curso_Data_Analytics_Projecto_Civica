@@ -1,7 +1,8 @@
 {{
   config(
     materialized='table',
-    unique_key = 'fact_order_id'
+    unique_key = 'fact_order_id',
+    on_schema_change = 'append_new_columns'
   )
 }}
 
@@ -52,11 +53,10 @@ SELECT
 FROM fact_orders
 ORDER BY natural_order_id
 
-/*
+
 {% if is_incremental() %}
 
   -- this filter will only be applied on an incremental run
   where fivetran_synced > (select max(fivetran_synced) from {{ this }})
 
 {% endif %}
-*/

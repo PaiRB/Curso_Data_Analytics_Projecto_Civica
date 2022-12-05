@@ -1,7 +1,8 @@
 {{
   config(
     materialized='table',
-    unique_key = 'event_id'
+    unique_key = 'event_id',
+    on_schema_change = 'append_new_columns'
   )
 }}
 
@@ -26,6 +27,7 @@ renamed_casted AS (
         , user_id
         , session_id
         , product_id
+        , year(created_at)*10000+month(created_at)*100+day(created_at) as id_date
 
 
         -- strings
@@ -48,3 +50,11 @@ renamed_casted AS (
     )
 
 SELECT * FROM renamed_casted
+
+
+{% if is_incremental() %}
+
+  -- this filter will only be applied on an incremental run
+  where fivetran_synced > (select max(fivetran_synced) from {{ this }})
+
+{% endif %}
