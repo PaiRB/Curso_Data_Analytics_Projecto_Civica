@@ -36,6 +36,7 @@ SELECT
     -- strings
     , u.first_name
     , u.last_name
+    , CONCAT(u.first_name,' ',u.last_name) AS client_full_name
     , u.phone_number
     , u.email
     , CASE

@@ -32,7 +32,6 @@ renamed_casted AS (
         e.user_id
         , e.session_id
         , u.first_name
-        , u.last_name
         , u.email
         , min(e.created_at) as inicio_session
         , max(e.created_at) as fin_session
