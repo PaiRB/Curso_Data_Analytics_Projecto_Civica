@@ -27,6 +27,7 @@ renamed_casted AS (
         , user_id
         , session_id
         , product_id
+        , year(created_at)*10000+month(created_at)*100+day(created_at) as id_date
 
 
         -- strings
