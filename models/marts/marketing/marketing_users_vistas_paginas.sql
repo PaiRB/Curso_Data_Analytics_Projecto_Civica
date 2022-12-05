@@ -31,7 +31,7 @@ renamed_casted AS (
     SELECT
         e.user_id
         , e.session_id
-        , u.first_name
+        , u.client_full_name
         , u.email
         , min(e.created_at) as inicio_session
         , max(e.created_at) as fin_session
@@ -49,8 +49,8 @@ renamed_casted AS (
     FROM stg_events e
     JOIN datos_user u
     ON e.user_id = u.user_id
-    {{ dbt_utils.group_by(5)}}
+    {{ dbt_utils.group_by(4)}}
     )
 
 SELECT * FROM renamed_casted
-ORDER BY first_name ASC
+ORDER BY client_full_name ASC

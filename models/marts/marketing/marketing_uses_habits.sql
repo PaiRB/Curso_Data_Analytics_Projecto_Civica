@@ -1,6 +1,6 @@
 {{
   config(
-    materialized='ephemeral'
+    materialized='view'
   )
 }}
 
@@ -10,16 +10,11 @@ WITH marketing_events AS (
     FROM {{ ref('marketing_users_vistas_paginas') }}
     ),
 
-ref_user AS (
-    SELECT 
-     * 
-    FROM {{ ref('dim_users') }}
-    ),
 
 renamed_casted AS (
     SELECT
         DISTINCT e.user_id
-        , u.first_name
+        , e.client_full_name
         , e.email
         , age
         , gender
@@ -40,4 +35,4 @@ renamed_casted AS (
     )
 
 SELECT * FROM renamed_casted
-ORDER BY client_name ASC
+ORDER BY client_full_name ASC

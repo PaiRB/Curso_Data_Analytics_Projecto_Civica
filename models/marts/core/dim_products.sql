@@ -1,7 +1,8 @@
 {{
   config(
-    materialized='table',
-    unique_key = 'product_id'
+    materialized='incremental',
+    unique_key = 'product_id',
+    on_schema_change = 'append_new_columns'
   )
 }}
 
@@ -28,3 +29,11 @@ select
     , fivetran_synced
 
 from stg_sql_products
+
+
+{% if is_incremental() %}
+
+  -- this filter will only be applied on an incremental run
+  where fivetran_synced > (select max(fivetran_synced) from {{ this }})
+
+{% endif %}
