@@ -20,7 +20,7 @@ WITH meses AS (
 
 SELECT
     -- ids
-    id_anio_mes
+    DISTINCT(id_anio_mes)
     
     -- strings
     , desc_mes
