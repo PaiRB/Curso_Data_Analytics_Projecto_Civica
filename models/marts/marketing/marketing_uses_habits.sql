@@ -19,7 +19,7 @@ ref_user AS (
 renamed_casted AS (
     SELECT
         DISTINCT e.user_id
-        , CONCAT(e.first_name,' ',e.last_name) AS client_name
+        , u.first_name
         , e.email
         , age
         , gender
