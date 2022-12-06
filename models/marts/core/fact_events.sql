@@ -1,6 +1,6 @@
 {{
   config(
-    materialized='table',
+    materialized='incremental',
     unique_key = 'event_id',
     on_schema_change = 'append_new_columns'
   )
@@ -24,11 +24,10 @@ renamed_casted AS (
         -- ids
         event_id
         , natural_event_id
+        , year(created_at)*10000+month(created_at)*100+day(created_at) as id_date
         , user_id
         , session_id
         , product_id
-        , year(created_at)*10000+month(created_at)*100+day(created_at) as id_date
-
 
         -- strings
         , product_name
@@ -44,6 +43,7 @@ renamed_casted AS (
 
         -- timestamps
         , created_at
+        , fivetran_synced
 
     FROM fact_events
 

@@ -53,6 +53,7 @@ renamed_casted AS (
 
         -- timestamps
         , e.created_at
+        , e.fivetran_synced
 
     FROM fact_events e
         LEFT JOIN fact_users u

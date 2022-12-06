@@ -29,6 +29,7 @@ renamed_casted AS (
     FROM calculo_budgets
 
     GROUP BY id_anio_mes
+    ORDER BY id_anio_mes ASC
 
     )
 
