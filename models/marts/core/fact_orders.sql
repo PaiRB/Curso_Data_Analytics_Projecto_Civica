@@ -1,6 +1,6 @@
 {{
   config(
-    materialized='table',
+    materialized='incremental',
     unique_key = 'fact_order_id',
     on_schema_change = 'append_new_columns'
   )
