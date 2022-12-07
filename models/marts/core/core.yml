@@ -171,6 +171,14 @@ models:
       - name: first_name
         description: "Atributo - Desc. del nombre del usuario"
 
+      - name: client_full_name
+        description: "Atributo - Desc. del nombre y apellido del usuario. Generado a partir de la concatenación de estos"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+          - dbt_expectations.expect_column_values_to_match_like_pattern:
+              like_pattern: "% %"
+      
       - name: last_name
         description: "Atributo - Desc. del apellido del usuario"
 
@@ -304,7 +312,52 @@ models:
 ##                  TABLA FACT_EVENTS                  ##
 #########################################################
 
+  - name: fact_events
+    description: "Tabla de hechos que muestra los eventos ocurridos en la página web"
+    columns:
+      - name: event_id
+        description: "Primary Key de la tabla events, generada como hash a partir del campo natural_event_id"
 
+      - name: natural_event_id
+        description: "Primary Key natural de la tabla events"
+
+      - name: id_date
+        description: "id que describe el año, mes y día al que pertence la fecha de creación del evento"
+
+      - name: user_id
+        description: "Foreign Key del id de users"
+
+      - name: session_id
+        description: "Atributo - código identificador de la sesión web"
+
+      - name: product_id
+        description: "Foreign Key del id de products"
+
+      - name: product_name
+        description: "Atributo - Desc. del nombre del producto"
+
+      - name: event_type
+        description: "Atributo - Desc. del tipo de evento"
+
+      - name: url
+        description: "Atributo - Desc. de las URL que han visitado los clientes"
+
+      - name: dispositve_type
+        description: "Atributo - Desc. del tipo de dispositivo desde el que accede el usuario"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['personal_computer','smart_phone']
+
+      - name: from_page
+        description: "Atributo - Desc. de la página web de la que proviene el usuario"
+
+      - name: created_at
+        description: "Atributo -  Desc. de la fecha y hora en la que se ha generado el evento de pedido"
+
+      - name: fivetran_synced
+        description: "Atributo - Fecha de carga de la información"
 
 
 #########################################################

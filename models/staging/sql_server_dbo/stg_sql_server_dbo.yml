@@ -100,8 +100,6 @@ models:
               field: product_id
               where: product_id <> null
 
-
-
       - name: id_date_created
         description: "id que describe el año, mes y día al que pertence la fecha de creación del evento"
         tests:
