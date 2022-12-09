@@ -1,15 +1,15 @@
-{% snapshot snapshot_dim_user %}
+{% snapshot snapshot_dim_products %}
 
 {{
     config(
       target_schema='snapshots',
-      unique_key='user_id',
+      unique_key='product_id',
 
       strategy='timestamp',
       updated_at='fivetran_synced'
     )
 }}
 
-select * from {{ ref('dim_users') }}
+select * from {{ ref('dim_products') }}
 
 {% endsnapshot %}
