@@ -1,0 +1,162 @@
+version: 2
+
+snapshots:
+
+#########################################################
+##                SNAPSHOT_DIM_PROMOS                  ##
+#########################################################
+
+  - name: snapshot_dim_promos
+    description: "Snapshot de la dimensión PROMOS, creada para registrar los cambios de cuando una promoción cambia de activa a inactiva"
+    columns:
+      - name: promo_id
+        description: "Primary Key de la tabla promo, generada como hash a partir del campo desc_promo"
+
+      - name: desc_promo
+        description: "Atributo - Desc. del nombre de la promoción aplicada. Primary key natural"
+
+      - name: status
+        description: "Atributo - Desc. del estado de la promoción - ACTIVE/INACTIVE"
+
+      - name: discount_usd
+        description: "Atributo métrica - Número plano que se descuenta al coste del pedido"
+
+      - name: fivetran_synced
+        description: "Atributo - Fecha de carga de la información"
+
+      - name: dbt_scd_id
+        description: "id que representa el id de la scd"
+
+      - name: dbt_updated_at
+        description: "Atributo - fecha en la que ha sido actualizado el campo"
+
+      - name: dbt_valid_from
+        description: ""
+
+      - name: dbt_valid_to
+        description: ""
+
+
+#########################################################
+##               SNAPSHOT_DIM_PRODUCTS                 ##
+#########################################################
+
+  - name: snapshot_dim_products
+    description: "Snapshot de la dimensión PRODUCTS, creada para registrar los posibles cambios en el precio del producto y el inventario"
+    columns:
+      - name: product_id
+        description: "Primary Key de la tabla products, generada como hash a partir del campo natural_product_id"
+
+      - name: natural_product_id
+        description: "Primary Key natural de la tabla products"
+
+      - name: price_usd
+        description: "Atributo métrica - Precio del producto"
+
+      - name: provider_price_usd
+        description: "Atributo métrica - Precio supuesto como precio del proveedor"
+
+      - name: name
+        description: "Atributo - Desc. del nombre del producto"
+
+      - name: inventory
+        description: "Atributo métrica - Cantidad de producto en el almacén"
+
+      - name: fivetran_synced
+        description: "Atributo - Fecha de carga de la información"
+
+      - name: dbt_scd_id
+        description: "id que representa el id de la scd"
+
+      - name: dbt_updated_at
+        description: "Atributo - fecha en la que ha sido actualizado el campo"
+
+      - name: dbt_valid_from
+        description: ""
+
+      - name: dbt_valid_to
+        description: ""
+
+
+
+#########################################################
+##               SNAPSHOT_FACT_ORDERS                  ##
+#########################################################
+
+  - name: snapshot_fact_orders
+    description: "Snapshot de la tabla de hechos ORDERS, creada para guardar principalmente los cambios del estado del envío"
+    columns:
+      - name: fact_order_id
+        description: "Primary Key de la tabla orders, generada como hash a partir de la concatenación de order_id y natural_order_id"
+
+      - name: order_id
+        description: "id de la tabla stg_events, generada como hash a partir del campo natural_order_id"
+
+      - name: natural_order_id
+        description: "Primary Key natural de la tabla orders"
+
+      - name: product_id
+        description: "Foreign Key del id de products"
+
+      - name: user_id
+        description: "Foreign Key del id de users"
+
+      - name: address_id
+        description: "Foreign Key del id de address"
+
+      - name: promo_id
+        description: "Foreign Key del id de promos"
+
+      - name: shipping_id
+        description: "id de la operación de envío del pedido"
+
+      - name: id_date_created
+        description: "id Desc. de la fecha en la que se ha creado el pedido"
+
+      - name: id_date_delivered
+        description: "id Desc. de la fecha en la que se ha entregado el pedido"
+
+      - name: status
+        description: "Atributo - Desc. del estado del pedido"
+
+      - name: shipping_service
+        description: "Atributo - Desc. del nombre de la compañia de transporte"
+
+      - name: order_cost_usd
+        description: "Atributo métrica - USD Descripción individual del coste de cada producto dentro de un pedido"
+
+      - name: shipping_cost_usd
+        description: "Atributo métrica - USD Descripción del coste del envío"
+
+      - name: delivery_days
+        description: "Atributo métrica - Días que han pasado entre la fecha del pedido y su entrega. Generado a partir de la diferencia entre created_at y delivered_at"
+
+      - name: created_at
+        description: "Atributo -  Desc. de la fecha y hora en la que se ha generado la orden de pedido"
+
+      - name: created_date
+        description: "Atributo -  Desc. de la fecha en la que se ha generado la orden de pedido"
+
+      - name: delivered_at
+        description: "Atributo -  Desc. de la fecha y hora en la que se ha recogido/entregado el producto"
+
+      - name: delivered_date
+        description: "Atributo - Desc. de la fecha en la que se ha recogido/entregado el producto"
+
+      - name: estimated_delivery_at
+        description: "Atributo - Fecha y hora estimada para la recogida/entrega del producto"
+
+      - name: fivetran_synced
+        description: "Atributo - Fecha de carga de la información"
+
+      - name: dbt_scd_id
+        description: "id que representa el id de la scd"
+
+      - name: dbt_updated_at
+        description: "Atributo - fecha en la que ha sido actualizado el campo"
+
+      - name: dbt_valid_from
+        description: ""
+
+      - name: dbt_valid_to
+        description: ""
