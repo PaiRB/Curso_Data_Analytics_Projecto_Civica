@@ -22,7 +22,7 @@ WITH fact_orders AS (
 
 SELECT
     -- ids
-    md5(CONCAT(order_id,product_id)) AS fact_order_id  
+    {{ dbt_utils.generate_surrogate_key(['order_id', 'product_id']) }} AS fact_order_id
     , order_id
     , natural_order_id
     , product_id
