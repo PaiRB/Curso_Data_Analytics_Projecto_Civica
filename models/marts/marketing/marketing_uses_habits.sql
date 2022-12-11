@@ -17,6 +17,7 @@ renamed_casted AS (
         , e.email
         , age
         , gender
+        , product_name
         , SUM(minutos_duracion) AS total_minutos_visitas
         , SUM(page_view) AS total_page_view
         , SUM(add_to_cart) AS total_add_to_cart
@@ -28,7 +29,7 @@ renamed_casted AS (
         , SUM(google_search) AS from_google_search
 
     FROM marketing_events e
-    {{ dbt_utils.group_by(5)}}
+    {{ dbt_utils.group_by(6)}}
     )
 
 SELECT * FROM renamed_casted

@@ -84,6 +84,9 @@ models:
       - name: email
         description: "Atributo - Desc. del email del usuario"
 
+      - name: name
+        description: "Atributo - Desc. del nombre del producto"
+
       - name: inicio_session
         description: "Atributo métrica - Desc. de la hora de la fecha y hora del inicio de sesión"
 

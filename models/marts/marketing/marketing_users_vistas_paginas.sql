@@ -35,6 +35,7 @@ renamed_casted AS (
         , u.email
         , u.age
         , u.gender
+        , e.product_name
         , min(e.created_at) as inicio_session
         , max(e.created_at) as fin_session
         , datediff(minute, min(e.created_at), max(e.created_at)) AS minutos_duracion 
@@ -51,7 +52,7 @@ renamed_casted AS (
     FROM stg_events e
     JOIN datos_user u
     ON e.user_id = u.user_id
-    {{ dbt_utils.group_by(6)}}
+    {{ dbt_utils.group_by(7)}}
     )
 
 SELECT * FROM renamed_casted
