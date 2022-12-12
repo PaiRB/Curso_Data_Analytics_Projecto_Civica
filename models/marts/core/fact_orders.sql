@@ -52,7 +52,6 @@ SELECT
     , fivetran_synced
 
 FROM fact_orders
-ORDER BY natural_order_id
 
 
 {% if is_incremental() %}
@@ -61,3 +60,5 @@ ORDER BY natural_order_id
   where fivetran_synced > (select max(fivetran_synced) from {{ this }})
 
 {% endif %}
+
+ORDER BY natural_order_id
