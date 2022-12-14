@@ -5,9 +5,10 @@
       target_schema='snapshots',
       unique_key='product_id',
 
-      strategy='timestamp',
-      updated_at='fivetran_synced'
+      strategy='check',
+      check_cols=['price','inventory','fivetran_synced'],
     )
+    
 }}
 
 select * from {{ ref('dim_products') }}
