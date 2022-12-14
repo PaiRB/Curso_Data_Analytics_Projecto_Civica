@@ -10,17 +10,10 @@
 --------------------------REFERENCES TO STG--------------------------
 ---------------------------------------------------------------------
 
-WITH stg_sql_addresses AS (
+WITH dim_ref_addresses AS (
     SELECT * 
-    FROM {{ ref('stg_sql_server_dbo_addresses') }}
+    FROM {{ ref('dim_addresses') }}
     ),
-
-zipcode_city AS (
-    SELECT 
-        CAST(zip AS VARCHAR) AS zipcode
-        , primary_city
-    FROM {{ref('zipcode_cities')}}
-),
 
 ---------------------------------------------------------------------
 -------------------------------SELECTS-------------------------------
@@ -33,18 +26,16 @@ renamed_casted AS (
       , natural_address_id
       
       -- strings
-      , a.zipcode AS zipcode
+      , zipcode
       , address
-      , TRIM(z.primary_city) AS city
+      , city
       , country 
       , state
 
       -- timestamps
       , fivetran_synced
         
-    FROM stg_sql_addresses a
-        JOIN zipcode_city z
-        ON a.zipcode = z.zipcode
+    FROM dim_ref_addresses
     )
 
 SELECT * FROM renamed_casted 
