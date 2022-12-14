@@ -6,7 +6,7 @@
       unique_key='product_id',
 
       strategy='check',
-      check_cols=['price','inventory','fivetran_synced'],
+      check_cols=['price_USD','inventory','fivetran_synced'],
     )
     
 }}
