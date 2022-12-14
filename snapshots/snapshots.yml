@@ -42,7 +42,7 @@ snapshots:
 #########################################################
 
   - name: snapshot_dim_products
-    description: "Snapshot de la dimensión PRODUCTS, creada para registrar los posibles cambios en el precio del producto y el inventario"
+    description: "Snapshot de la dimensión PRODUCTS, creada para registrar los posibles cambios en el precio del producto, el inventario y la fecha de registro"
     columns:
       - name: product_id
         description: "Primary Key de la tabla products, generada como hash a partir del campo natural_product_id"

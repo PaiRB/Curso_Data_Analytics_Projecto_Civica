@@ -63,6 +63,59 @@ models:
    
 
 #########################################################
+##             TABLA MARKETING_USER_HABITS             ##
+#########################################################
+
+  - name: marketing_users_habits
+    description: ""
+    columns:
+      - name: user_id
+        description: "Primary Key de la tabla users, generada como hash a partir del campo natural_user_id"
+
+      - name: client_full_name
+        description: "Atributo - Desc. del nombre y apellidos del usuario"
+
+      - name: email
+        description: "Atributo - Desc. del email del usuario"
+
+      - name: age
+        description: "Atributo - Desc. de la edad del usuario"
+
+      - name: gender
+        description: "Atributo - Desc. del sexo del usuario"
+
+      - name: product_name
+        description: "Atributo - Desc. del nombre del producto"
+
+      - name: total_minutos_visitas
+        description: "Atributo métrica - Desc. de los minutos que ha durado la sesión. Calculado mediante la diferencia entre fin_session y inicio_session"
+
+      - name: total_page_view
+        description: "Atributo métrica - Cantidad de visitas en la página page_view por usuario y sesion"
+
+      - name: total_add_to_cart
+        description: "Atributo métrica - Cantidad de visitas en la página add_to_cart por usuario y sesion"
+
+      - name: total_checkout
+        description: "Atributo métrica - Cantidad de visitas en la página checkout por usuario y sesion"
+
+      - name: total_package_shipped
+        description: "Atributo métrica - Cantidad de visitas en la página package_shipped por usuario y sesion"
+
+      - name: from_youtube_ads
+        description: "Atributo métrica - Cantidad de visitas procedentes de youtube_ads"
+
+      - name: from_youtube_promo
+        description: "Atributo métrica - Cantidad de visitas procedentes de youtube_promo"
+
+      - name: from_instagram_profile
+        description: "Atributo métrica - Cantidad de visitas procedentes del perfil de instagram del negocio"
+
+      - name: from_google_search
+        description: "Atributo métrica - Cantidad de visitas procedentes de busqueda directa del negocio en google"
+
+
+#########################################################
 ##        TABLA MARKETING_USER_VISTAS_PAGINAS          ##
 #########################################################
 
