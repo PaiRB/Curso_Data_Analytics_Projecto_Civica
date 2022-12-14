@@ -39,6 +39,38 @@ models:
 
 
 #########################################################
+##            TABLA DIM_ADDRESSES_USERS                ##
+#########################################################
+
+  - name: dim_addresses
+    description: "Tabla de dimensión que contiene los datos de direcciones de envío y direcciones de los usuarios"
+    columns:
+      - name: address_id
+        description: "Primary Key de la tabla addresses, generada como hash a partir del campo natural_address_id"
+
+      - name: natural_address_id
+        description: "Primary Key natural de la tabla addresses"
+
+      - name: zipcode
+        description: "Atributo - Desc. del código postal de la dirección"
+
+      - name: address
+        description: "Atributo - Desc. de la dirección"
+
+      - name: city
+        description: "Atributo - Desc. del nombre ciudad añadido a la tabla a partir de una seed"
+
+      - name: country
+        description: "Atributo - Desc. del nombre pais a donde pertenece la dirección"
+
+      - name: state
+        description: "Atributo - Desc. del nombre estado al que pertenece la dirección"
+
+      - name: fivetran_synced
+        description: "Atributo - Fecha de carga de la información"
+
+
+#########################################################
 ##                   TABLA DIM_DATES                   ##
 #########################################################
 
